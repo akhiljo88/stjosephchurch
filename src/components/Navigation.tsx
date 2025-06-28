@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck, LogIn } from 'lucide-react';
+import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck } from 'lucide-react';
 
 interface NavigationProps {
   onClose: () => void;
@@ -17,7 +17,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
     { path: '/families', label: 'Our Families', icon: Heart },
     { path: '/events', label: 'Events & Timings', icon: Calendar },
     { path: '/contact', label: 'Connect With Us', icon: Phone },
-    { path: '/login', label: 'Login', icon: LogIn }
+    { path: '/login', label: 'Login', icon: UserCheck }
   ];
 
   return (
@@ -33,7 +33,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-900 to-blue-800 rounded-t-3xl shadow-2xl"
+        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-900 to-red-800 rounded-t-3xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -45,7 +45,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
               whileTap={{ scale: 0.9 }}
               className="p-2 bg-amber-100 hover:bg-amber-200 rounded-full transition-colors duration-300"
             >
-              <X className="w-6 h-6 text-blue-800" />
+              <X className="w-6 h-6 text-red-800" />
             </motion.button>
           </div>
 
@@ -55,16 +55,14 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
               return (
                 <motion.div
                   key={item.path}
-                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <Link
                     to={item.path}
                     onClick={onClose}
-                    className="flex flex-col items-center p-4 bg-amber-100/10 hover:bg-amber-100/20 rounded-xl border border-amber-400/30 transition-all duration-300"
+                    className="flex flex-col items-center p-4 bg-amber-100/10 hover:bg-amber-100/20 rounded-xl border border-amber-400/30 transition-all duration-300 hover:scale-105"
                   >
                     <IconComponent className="w-8 h-8 text-amber-300 mb-2" />
                     <span className="text-amber-100 text-sm font-medium text-center">{item.label}</span>

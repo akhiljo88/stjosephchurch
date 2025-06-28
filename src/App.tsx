@@ -16,21 +16,6 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import UserPanel from './pages/UserPanel';
 import AdminDashboard from './pages/AdminDashboard';
-import SpecialEvents from './pages/SpecialEvents';
-import KcymArabiUnit from './pages/KcymArabiUnit';
-import CherupushpaMissionLeague from './pages/CherupushpaMissionLeague';
-import ThalasserySocialService from './pages/ThalasserySocialService';
-import Mathruvedi from './pages/Mathruvedi';
-import StSebastiansUnit from './pages/StSebastiansUnit';
-import StAnnesUnit from './pages/StAnnesUnit';
-import StMariaGorethyUnit from './pages/StMariaGorethyUnit';
-import StAntonysUnit from './pages/StAntonysUnit';
-import StThomasUnit from './pages/StThomasUnit';
-import StAlphonsaUnit from './pages/StAlphonsaUnit';
-import StMarysUnit from './pages/StMarysUnit';
-import StDominicSavioUnit from './pages/StDominicSavioUnit';
-import StJohnCalabriaUnit from './pages/StJohnCalabriaUnit';
-import StJosephsUnit from './pages/StJosephsUnit';
 
 function App() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -60,25 +45,10 @@ function App() {
             <Route path="/holy-communities" element={<HolyCommunities />} />
             <Route path="/families" element={<Families />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/special-events" element={<SpecialEvents />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user-panel" element={<UserPanel />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/kcym-arabi-unit" element={<KcymArabiUnit />} />
-            <Route path="/cherupushpa-mission-league" element={<CherupushpaMissionLeague />} />
-            <Route path="/thalassery-social-service" element={<ThalasserySocialService />} />
-            <Route path="/mathruvedi" element={<Mathruvedi />} />
-            <Route path="/st-sebastians-unit" element={<StSebastiansUnit />} />
-            <Route path="/st-annes-unit" element={<StAnnesUnit />} />
-            <Route path="/st-maria-gorethy-unit" element={<StMariaGorethyUnit />} />
-            <Route path="/st-antonys-unit" element={<StAntonysUnit />} />
-            <Route path="/st-thomas-unit" element={<StThomasUnit />} />
-            <Route path="/st-alphonsa-unit" element={<StAlphonsaUnit />} />
-            <Route path="/st-marys-unit" element={<StMarysUnit />} />
-            <Route path="/st-dominic-savio-unit" element={<StDominicSavioUnit />} />
-            <Route path="/st-john-calabria-unit" element={<StJohnCalabriaUnit />} />
-            <Route path="/st-josephs-unit" element={<StJosephsUnit />} />
           </Routes>
         </motion.main>
       </div>
