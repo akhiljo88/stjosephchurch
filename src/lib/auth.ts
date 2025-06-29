@@ -37,13 +37,13 @@ export const signIn = async (username: string, password: string): Promise<SignIn
       id: data.id,
       name: data.name,
       username: data.username,
-      monthlyCollection: data.monthly_collection,
-      cleaning: data.cleaning,
-      commonWork: data.common_work,
-      funeralFund: data.funeral_fund,
-      total: data.total,
-      isAdmin: data.is_admin,
-      familyPhoto: data.family_photo
+      monthlyCollection: data.monthly_collection || 0,
+      cleaning: data.cleaning || 0,
+      commonWork: data.common_work || 0,
+      funeralFund: data.funeral_fund || 0,
+      total: data.total || 0,
+      isAdmin: data.is_admin || false,
+      familyPhoto: data.family_photo || null
     };
 
     // Store user in localStorage for session management
@@ -52,16 +52,22 @@ export const signIn = async (username: string, password: string): Promise<SignIn
     return { 
       success: true, 
       user, 
-      isAdmin: data.is_admin 
+      isAdmin: data.is_admin || false
     };
   } catch (error) {
+    console.error('Login error:', error);
     return { success: false, error: 'Login failed. Please try again.' };
   }
 };
 
 export const getCurrentUser = (): User | null => {
-  const userStr = localStorage.getItem('currentUser');
-  return userStr ? JSON.parse(userStr) : null;
+  try {
+    const userStr = localStorage.getItem('currentUser');
+    return userStr ? JSON.parse(userStr) : null;
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    return null;
+  }
 };
 
 export const signOut = (): void => {
