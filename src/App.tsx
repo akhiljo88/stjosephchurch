@@ -21,8 +21,6 @@ import AddUser from './pages/AddUser';
 import UpdateUser from './pages/UpdateUser';
 
 function App() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
-
   return (
     <Router>
       <div className="min-h-screen bg-amber-50">

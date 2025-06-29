@@ -1,12 +1,23 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import Header from '../components/Header';
+import Navigation from '../components/Navigation';
 import SocialMedia from '../components/SocialMedia';
 import Copyright from '../components/Copyright';
 
 const Home: React.FC = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <div className="relative min-h-screen overflow-hidden">
+      <Header onMenuClick={() => setIsNavOpen(true)} />
+      <AnimatePresence>
+        {isNavOpen && (
+          <Navigation onClose={() => setIsNavOpen(false)} />
+        )}
+      </AnimatePresence>
+
       <div 
         className="absolute inset-0 bg-cover bg-center bg-fixed"
         style={{
@@ -40,7 +51,7 @@ const Home: React.FC = () => {
         ))}
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
