@@ -145,7 +145,7 @@ const UserDashboard: React.FC = () => {
               <div className="bg-amber-100 rounded-2xl p-8 text-center">
                 {user.familyPhoto ? (
                   <div className="space-y-4">
-                    <div className="w-full h-48 bg-white rounded-xl overflow-hidden shadow-lg">
+                    <div className="w-full aspect-square max-w-sm mx-auto bg-white rounded-xl overflow-hidden shadow-lg">
                       <img
                         src={user.familyPhoto}
                         alt="Family photo"
