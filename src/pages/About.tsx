@@ -1,15 +1,24 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
+import Header from '../components/Header';
+import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
 
 const About: React.FC = () => {
   const navigate = useNavigate();
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
+      <Header onMenuClick={() => setIsNavOpen(true)} />
+      <AnimatePresence>
+        {isNavOpen && (
+          <Navigation onClose={() => setIsNavOpen(false)} />
+        )}
+      </AnimatePresence>
       <HomeButton />
       <div className="pt-24 pb-12 px-6">
         <div className="container mx-auto max-w-4xl">

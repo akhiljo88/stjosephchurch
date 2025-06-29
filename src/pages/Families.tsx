@@ -1,10 +1,14 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Home, Users, Baby, GraduationCap, Calendar } from 'lucide-react';
+import Header from '../components/Header';
+import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
 
 const Families: React.FC = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const familyPrograms = [
     {
       title: "Family Prayer Night",
@@ -59,6 +63,12 @@ const Families: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
+      <Header onMenuClick={() => setIsNavOpen(true)} />
+      <AnimatePresence>
+        {isNavOpen && (
+          <Navigation onClose={() => setIsNavOpen(false)} />
+        )}
+      </AnimatePresence>
       <HomeButton />
       <div className="pt-24 pb-12 px-6">
         <div className="container mx-auto max-w-7xl">
