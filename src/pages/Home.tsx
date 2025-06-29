@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import SocialMedia from '../components/SocialMedia';
@@ -58,8 +57,12 @@ const Home: React.FC = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           className="mb-6"
         >
-          <div className="w-32 h-32 bg-gradient-to-br from-amber-200 to-amber-400 rounded-full flex items-center justify-center shadow-2xl mx-auto mb-4 border-4 border-amber-300">
-            <Heart className="w-20 h-20 text-red-800" fill="currentColor" />
+          <div className="w-32 h-32 bg-gradient-to-br from-amber-200 to-amber-400 rounded-full flex items-center justify-center shadow-2xl mx-auto mb-4 border-4 border-amber-300 overflow-hidden">
+            <img 
+              src="/st-joseph.png" 
+              alt="St. Joseph" 
+              className="w-28 h-28 object-cover rounded-full"
+            />
           </div>
         </motion.div>
 

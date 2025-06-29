@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Menu, Heart } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -20,8 +20,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center shadow-lg">
-            <Heart className="w-6 h-6 text-red-800" fill="currentColor" />
+          <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+            <img 
+              src="/st-joseph.png" 
+              alt="St. Joseph" 
+              className="w-8 h-8 object-cover rounded-full"
+            />
           </div>
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-amber-100 font-serif tracking-wide">
