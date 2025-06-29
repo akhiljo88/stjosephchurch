@@ -84,6 +84,42 @@ export const getCurrentUser = (): User | null => {
   }
 };
 
+// New function to get complete user data including family photo
+export const getCurrentUserWithPhoto = async (): Promise<User | null> => {
+  try {
+    const localUser = getCurrentUser();
+    if (!localUser) return null;
+
+    // Fetch complete user data from database including family photo
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', localUser.id)
+      .single();
+
+    if (error || !data) {
+      console.error('Error fetching user with photo:', error);
+      return localUser; // Return local user as fallback
+    }
+
+    return {
+      id: data.id,
+      name: data.name,
+      username: data.username,
+      monthlyCollection: data.monthly_collection || 0,
+      cleaning: data.cleaning || 0,
+      commonWork: data.common_work || 0,
+      funeralFund: data.funeral_fund || 0,
+      total: data.total || 0,
+      isAdmin: data.is_admin || false,
+      familyPhoto: data.family_photo || null
+    };
+  } catch (error) {
+    console.error('Error getting current user with photo:', error);
+    return getCurrentUser(); // Return local user as fallback
+  }
+};
+
 export const signOut = (): void => {
   localStorage.removeItem('currentUser');
 };

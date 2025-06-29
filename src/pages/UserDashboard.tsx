@@ -5,13 +5,14 @@ import { User, Calendar, Heart, LogOut, Home, Upload, Image } from 'lucide-react
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getCurrentUser, signOut, isAuthenticated } from '../lib/auth';
+import { getCurrentUserWithPhoto, signOut, isAuthenticated } from '../lib/auth';
 import type { User as UserType } from '../lib/auth';
 
 const UserDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -19,13 +20,25 @@ const UserDashboard: React.FC = () => {
       return;
     }
 
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    } else {
-      navigate('/login');
-    }
+    loadUserData();
   }, [navigate]);
+
+  const loadUserData = async () => {
+    setLoading(true);
+    try {
+      const currentUser = await getCurrentUserWithPhoto();
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      navigate('/login');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     signOut();
@@ -38,10 +51,18 @@ const UserDashboard: React.FC = () => {
     { event: 'Feast of St. Joseph', date: 'Mar 19, 2026', time: '7:00 AM' }
   ];
 
-  if (!user) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100 flex items-center justify-center">
         <p className="text-red-900 font-serif text-xl">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100 flex items-center justify-center">
+        <p className="text-red-900 font-serif text-xl">User not found</p>
       </div>
     );
   }
