@@ -46,12 +46,26 @@ export const signIn = async (username: string, password: string): Promise<SignIn
       familyPhoto: data.family_photo || null
     };
 
-    // Store user in localStorage for session management
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    // Create a copy of user object without familyPhoto for localStorage
+    const userForStorage = {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      monthlyCollection: user.monthlyCollection,
+      cleaning: user.cleaning,
+      commonWork: user.commonWork,
+      funeralFund: user.funeralFund,
+      total: user.total,
+      isAdmin: user.isAdmin
+      // Explicitly exclude familyPhoto to prevent localStorage quota issues
+    };
+
+    // Store user in localStorage for session management (without familyPhoto)
+    localStorage.setItem('currentUser', JSON.stringify(userForStorage));
 
     return { 
       success: true, 
-      user, 
+      user, // Return full user object including familyPhoto
       isAdmin: data.is_admin || false
     };
   } catch (error) {
