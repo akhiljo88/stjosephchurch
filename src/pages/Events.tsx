@@ -179,7 +179,8 @@ const Events: React.FC = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2, duration: 0.8 }}
-            className="mt-16 bg-gradient-to-br from-red-800 to-red-900 rounded-3xl shadow-2xl p-12 text-center"
+            onClick={() => window.open('https://maps.google.com/?q=St+Josephs+Church+Arabi', '_blank')}
+            className="mt-16 bg-gradient-to-br from-red-800 to-red-900 rounded-3xl shadow-2xl p-12 text-center cursor-pointer hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
           >
             <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <MapPin className="w-10 h-10 text-red-900" />
@@ -190,7 +191,7 @@ const Events: React.FC = () => {
               celebrate, and grow in faith together. Join us for any of our services or events.
             </p>
             <div className="bg-amber-100 px-8 py-4 rounded-full inline-block">
-              <span className="text-red-900 font-bold font-serif">All Are Welcome</span>
+              <span className="text-red-900 font-bold font-serif">Click to View on Google Maps</span>
             </div>
           </motion.div>
         </div>

@@ -64,24 +64,25 @@ const OurHistory: React.FC = () => {
           </motion.div>
 
           <div className="relative mb-16">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-red-800 via-amber-400 to-red-800"></div>
+            {/* Vertical timeline line positioned at 1/4 from left */}
+            <div className="absolute left-1/4 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-red-800 via-amber-400 to-red-800"></div>
             
             {timelineEvents.map((event, index) => {
               const IconComponent = event.icon;
-              const isEven = index % 2 === 0;
               
               return (
                 <motion.div
                   key={event.year}
-                  initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+                  initial={{ opacity: 0, x: -100 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.3, duration: 0.8 }}
-                  className={`relative flex items-center mb-16 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}
+                  className="relative flex items-center mb-16 flex-row"
                 >
-                  <div className={`w-1/2 ${isEven ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
+                  {/* Content positioned to the right of timeline */}
+                  <div className="w-3/4 pl-12 text-left">
                     <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-8 rounded-2xl shadow-xl border-2 border-amber-200">
                       <div className="flex items-center mb-4">
-                        <div className={`w-12 h-12 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center mr-4 ${!isEven ? 'order-2 ml-4 mr-0' : ''}`}>
+                        <div className="w-12 h-12 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center mr-4">
                           <IconComponent className="w-6 h-6 text-amber-100" />
                         </div>
                         <h3 className="text-2xl font-bold text-red-900 font-serif">{event.year}</h3>
@@ -91,7 +92,8 @@ const OurHistory: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-amber-400 rounded-full border-4 border-red-800 shadow-lg"></div>
+                  {/* Timeline dot positioned at 1/4 from left */}
+                  <div className="absolute left-1/4 transform -translate-x-1/2 w-6 h-6 bg-amber-400 rounded-full border-4 border-red-800 shadow-lg"></div>
                 </motion.div>
               );
             })}
