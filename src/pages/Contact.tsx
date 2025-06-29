@@ -171,7 +171,7 @@ const Contact: React.FC = () => {
                 >
                   <Send className="w-6 h-6 mr-3" />
                   Send Message
-                </button>
+                </motion.button>
               </div>
             </form>
           </motion.div>
