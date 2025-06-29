@@ -5,14 +5,19 @@ import { User, Save, Home, ArrowLeft, X } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getUsers, updateUser } from '../utils/userStorage';
-import { User as UserType } from '../types/User';
+import { getUserById, updateUser } from '../lib/database';
+import { isAdmin } from '../lib/auth';
+import type { Database } from '../lib/supabase';
+
+type UserType = Database['public']['Tables']['users']['Row'];
 
 const UpdateUser: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     monthlyCollection: 0,
@@ -22,29 +27,57 @@ const UpdateUser: React.FC = () => {
   });
 
   useEffect(() => {
+    if (!isAdmin()) {
+      navigate('/login');
+      return;
+    }
+
     if (id) {
-      const users = getUsers();
-      const foundUser = users.find(u => u.id === id);
-      if (foundUser) {
-        setUser(foundUser);
+      loadUser();
+    }
+  }, [id, navigate]);
+
+  const loadUser = async () => {
+    if (!id) return;
+    
+    try {
+      const userData = await getUserById(id);
+      if (userData) {
+        setUser(userData);
         setFormData({
-          name: foundUser.name,
-          monthlyCollection: foundUser.monthlyCollection,
-          cleaning: foundUser.cleaning,
-          commonWork: foundUser.commonWork,
-          funeralFund: foundUser.funeralFund
+          name: userData.name,
+          monthlyCollection: userData.monthly_collection,
+          cleaning: userData.cleaning,
+          commonWork: userData.common_work,
+          funeralFund: userData.funeral_fund
         });
       } else {
         navigate('/admin-dashboard');
       }
-    }
-  }, [id, navigate]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (id) {
-      updateUser(id, formData);
+    } catch (error) {
+      console.error('Error loading user:', error);
       navigate('/admin-dashboard');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!id) return;
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const result = await updateUser(id, formData);
+      if (result) {
+        navigate('/admin-dashboard');
+      } else {
+        setError('Failed to update user. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to update user. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,7 +94,11 @@ const UpdateUser: React.FC = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100 flex items-center justify-center">
+        <p className="text-red-900 font-serif text-xl">Loading...</p>
+      </div>
+    );
   }
 
   return (
@@ -116,6 +153,16 @@ const UpdateUser: React.FC = () => {
               <h2 className="text-2xl font-bold text-red-900 font-serif">Update Details</h2>
             </div>
 
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-300 rounded-xl"
+              >
+                <p className="text-red-700 text-sm font-serif text-center">{error}</p>
+              </motion.div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-red-900 font-semibold mb-2 font-serif">
@@ -130,6 +177,7 @@ const UpdateUser: React.FC = () => {
                   className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                   placeholder="Enter full name"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -147,6 +195,7 @@ const UpdateUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -163,6 +212,7 @@ const UpdateUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -181,6 +231,7 @@ const UpdateUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -197,6 +248,7 @@ const UpdateUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -209,13 +261,14 @@ const UpdateUser: React.FC = () => {
 
               <div className="flex gap-4 justify-center">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: loading ? 1 : 1.05 }}
+                  whileTap={{ scale: loading ? 1 : 0.95 }}
                   type="submit"
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
+                  disabled={loading}
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="w-6 h-6 mr-3" />
-                  Update
+                  {loading ? 'Updating...' : 'Update'}
                 </motion.button>
 
                 <motion.button
@@ -223,7 +276,8 @@ const UpdateUser: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                   type="button"
                   onClick={handleCancel}
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
+                  disabled={loading}
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <X className="w-6 h-6 mr-3" />
                   Cancel

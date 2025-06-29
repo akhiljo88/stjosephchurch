@@ -5,11 +5,14 @@ import { User, Plus, Home, ArrowLeft } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { addUser } from '../utils/userStorage';
+import { addUser } from '../lib/database';
+import { isAdmin } from '../lib/auth';
 
 const AddUser: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -20,10 +23,29 @@ const AddUser: React.FC = () => {
     funeralFund: 25
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    if (!isAdmin()) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addUser(formData);
-    navigate('/admin-dashboard');
+    setLoading(true);
+    setError('');
+
+    try {
+      const result = await addUser(formData);
+      if (result) {
+        navigate('/admin-dashboard');
+      } else {
+        setError('Failed to add user. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to add user. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +108,16 @@ const AddUser: React.FC = () => {
               <h2 className="text-2xl font-bold text-red-900 font-serif">User Information</h2>
             </div>
 
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-300 rounded-xl"
+              >
+                <p className="text-red-700 text-sm font-serif text-center">{error}</p>
+              </motion.div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -101,6 +133,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Enter full name"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -117,6 +150,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Enter username"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -134,6 +168,7 @@ const AddUser: React.FC = () => {
                   className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                   placeholder="Enter password"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -151,6 +186,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -167,6 +203,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -185,6 +222,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
 
@@ -201,6 +239,7 @@ const AddUser: React.FC = () => {
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     min="0"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -213,13 +252,14 @@ const AddUser: React.FC = () => {
 
               <div className="text-center">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: loading ? 1 : 1.05 }}
+                  whileTap={{ scale: loading ? 1 : 0.95 }}
                   type="submit"
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
+                  disabled={loading}
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-6 h-6 mr-3" />
-                  Add User
+                  {loading ? 'Adding User...' : 'Add User'}
                 </motion.button>
               </div>
             </form>

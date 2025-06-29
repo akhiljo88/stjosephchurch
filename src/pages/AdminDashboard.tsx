@@ -5,24 +5,54 @@ import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plu
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { User } from '../types/User';
-import { getUsers, deleteUser } from '../utils/userStorage';
+import { getUsers, deleteUser } from '../lib/database';
+import { signOut, isAdmin } from '../lib/auth';
+import type { Database } from '../lib/supabase';
+
+type User = Database['public']['Tables']['users']['Row'];
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setUsers(getUsers());
-  }, []);
+    // Check if user is admin
+    if (!isAdmin()) {
+      navigate('/login');
+      return;
+    }
 
-  const handleDeleteUser = (id: string) => {
+    loadUsers();
+  }, [navigate]);
+
+  const loadUsers = async () => {
+    setLoading(true);
+    try {
+      const usersData = await getUsers();
+      setUsers(usersData.filter(user => !user.is_admin)); // Don't show admin users in the table
+    } catch (error) {
+      console.error('Error loading users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      if (deleteUser(id)) {
-        setUsers(getUsers());
+      const success = await deleteUser(id);
+      if (success) {
+        await loadUsers(); // Reload users after deletion
+      } else {
+        alert('Failed to delete user. Please try again.');
       }
     }
+  };
+
+  const handleLogout = () => {
+    signOut();
+    navigate('/login');
   };
 
   const dashboardStats = [
@@ -70,7 +100,7 @@ const AdminDashboard: React.FC = () => {
                 Home
               </button>
               <button
-                onClick={() => navigate('/login')}
+                onClick={handleLogout}
                 className="flex items-center px-4 py-2 bg-red-800 hover:bg-red-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif"
               >
                 <LogOut className="w-4 h-4 mr-2" />
@@ -168,54 +198,60 @@ const AdminDashboard: React.FC = () => {
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
             <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200 overflow-x-auto">
-              <table className="w-full min-w-[800px]">
-                <thead>
-                  <tr className="border-b-2 border-amber-300">
-                    <th className="text-left p-3 text-red-900 font-serif">Name</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Monthly Collection</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Cleaning</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Common Work</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Funeral Fund</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Total</th>
-                    <th className="text-left p-3 text-red-900 font-serif">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id} className="border-b border-amber-200 hover:bg-amber-100">
-                      <td className="p-3 font-serif text-red-900">{user.name}</td>
-                      <td className="p-3 font-serif text-red-900">₹{user.monthlyCollection}</td>
-                      <td className="p-3 font-serif text-red-900">₹{user.cleaning}</td>
-                      <td className="p-3 font-serif text-red-900">₹{user.commonWork}</td>
-                      <td className="p-3 font-serif text-red-900">₹{user.funeralFund}</td>
-                      <td className="p-3 font-serif text-red-900 font-bold">₹{user.total}</td>
-                      <td className="p-3">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => navigate(`/update-user/${user.id}`)}
-                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteUser(user.id)}
-                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
+              {loading ? (
+                <div className="text-center py-8">
+                  <p className="text-red-900 font-serif">Loading users...</p>
+                </div>
+              ) : (
+                <table className="w-full min-w-[800px]">
+                  <thead>
+                    <tr className="border-b-2 border-amber-300">
+                      <th className="text-left p-3 text-red-900 font-serif">Name</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Monthly Collection</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Cleaning</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Common Work</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Funeral Fund</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Total</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Action</th>
                     </tr>
-                  ))}
-                  {users.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className="p-8 text-center text-gray-500 font-serif">
-                        No users found. Add your first user to get started.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user.id} className="border-b border-amber-200 hover:bg-amber-100">
+                        <td className="p-3 font-serif text-red-900">{user.name}</td>
+                        <td className="p-3 font-serif text-red-900">₹{user.monthly_collection}</td>
+                        <td className="p-3 font-serif text-red-900">₹{user.cleaning}</td>
+                        <td className="p-3 font-serif text-red-900">₹{user.common_work}</td>
+                        <td className="p-3 font-serif text-red-900">₹{user.funeral_fund}</td>
+                        <td className="p-3 font-serif text-red-900 font-bold">₹{user.total}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => navigate(`/update-user/${user.id}`)}
+                              className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(user.id)}
+                              className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {users.length === 0 && !loading && (
+                      <tr>
+                        <td colSpan={7} className="p-8 text-center text-gray-500 font-serif">
+                          No users found. Add your first user to get started.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
             </div>
           </motion.div>
 

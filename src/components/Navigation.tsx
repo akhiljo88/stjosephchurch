@@ -58,11 +58,14 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  className={item.label === 'Login' ? 'col-span-2 flex justify-center' : ''}
                 >
                   <Link
                     to={item.path}
                     onClick={onClose}
-                    className="flex flex-col items-center p-4 bg-gradient-to-br from-amber-100/20 to-amber-200/20 hover:from-amber-100/30 hover:to-amber-200/30 rounded-xl border border-amber-400/40 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm"
+                    className={`flex flex-col items-center p-4 bg-gradient-to-br from-amber-100/20 to-amber-200/20 hover:from-amber-100/30 hover:to-amber-200/30 rounded-xl border border-amber-400/40 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm ${
+                      item.label === 'Login' ? 'w-48' : 'w-full'
+                    }`}
                   >
                     <IconComponent className="w-8 h-8 text-amber-300 mb-2" />
                     <span className="text-amber-100 text-sm font-medium text-center font-serif">{item.label}</span>

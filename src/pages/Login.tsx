@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Lock, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
+import { User, Lock, LogIn } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
+import { signIn } from '../lib/auth';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fullName: ''
+    username: '',
+    password: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.email === 'admin' && formData.password === 'akhil0880') {
-      navigate('/admin-dashboard');
-    } else {
-      navigate('/user-dashboard');
+    setLoading(true);
+    setError('');
+
+    try {
+      const result = await signIn(formData.username, formData.password);
+      
+      if (result.success) {
+        if (result.isAdmin) {
+          navigate('/admin-dashboard');
+        } else {
+          navigate('/user-dashboard');
+        }
+      } else {
+        setError(result.error || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('Login failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,53 +75,39 @@ const Login: React.FC = () => {
                 <User className="w-10 h-10 text-amber-100" />
               </motion.div>
               <h1 className="text-3xl font-bold text-red-900 mb-2 font-serif">
-                {isLogin ? 'Welcome Back' : 'Join Our Community'}
+                Welcome Back
               </h1>
               <p className="text-gray-700 font-serif">
-                {isLogin ? 'Sign in to your account' : 'Create your account to get started'}
+                Sign in to your account
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <label htmlFor="fullName" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="fullName"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                      placeholder="Enter your full name"
-                      required={!isLogin}
-                    />
-                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
-                  </div>
-                </motion.div>
-              )}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-300 rounded-xl"
+              >
+                <p className="text-red-700 text-sm font-serif text-center">{error}</p>
+              </motion.div>
+            )}
 
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-red-900 font-semibold mb-2 font-serif">
+                <label htmlFor="username" className="block text-red-900 font-semibold mb-2 font-serif">
                   Username
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                    id="username"
+                    name="username"
+                    value={formData.username}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Enter your username"
                     required
+                    disabled={loading}
                   />
                   <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
                 </div>
@@ -119,83 +119,31 @@ const Login: React.FC = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type="password"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 pl-12 pr-12 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                    className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Enter your password"
                     required
+                    disabled={loading}
                   />
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-amber-600 hover:text-red-600 transition-colors duration-300"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
                 </div>
               </div>
 
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <label htmlFor="confirmPassword" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                      placeholder="Confirm your password"
-                      required={!isLogin}
-                    />
-                    <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
-                  </div>
-                </motion.div>
-              )}
-
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: loading ? 1 : 1.02 }}
+                whileTap={{ scale: loading ? 1 : 0.98 }}
                 type="submit"
-                className="w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
+                disabled={loading}
+                className="w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLogin ? <LogIn className="w-6 h-6 mr-3" /> : <UserPlus className="w-6 h-6 mr-3" />}
-                {isLogin ? 'Sign In' : 'Create Account'}
+                <LogIn className="w-6 h-6 mr-3" />
+                {loading ? 'Signing In...' : 'Sign In'}
               </motion.button>
             </form>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-700 font-serif mb-4">
-                {isLogin ? "Don't have an account?" : 'Already have an account?'}
-              </p>
-              <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-red-800 hover:text-red-900 font-semibold underline font-serif transition-colors duration-300"
-              >
-                {isLogin ? 'Create Account' : 'Sign In'}
-              </button>
-            </div>
-
-            {isLogin && (
-              <div className="mt-6 p-4 bg-amber-100 rounded-xl border border-amber-300">
-                <p className="text-sm text-red-800 font-serif text-center">
-                  <strong>Demo Credentials:</strong><br />
-                  Admin: admin / akhil0880<br />
-                  User: Any other username/password
-                </p>
-              </div>
-            )}
           </div>
         </motion.div>
       </div>

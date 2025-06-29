@@ -5,8 +5,8 @@ import { User, Calendar, Heart, LogOut, Home } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getUserByCredentials } from '../utils/userStorage';
-import { User as UserType } from '../types/User';
+import { getCurrentUser, signOut, isAuthenticated } from '../lib/auth';
+import type { User as UserType } from '../lib/auth';
 
 const UserDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -14,26 +14,23 @@ const UserDashboard: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
-    // In a real app, you'd get this from authentication context
-    // For demo, we'll use a sample user or redirect to login
-    const sampleUser = getUserByCredentials('user', 'password');
-    if (sampleUser) {
-      setUser(sampleUser);
-    } else {
-      // Create a demo user for display
-      setUser({
-        id: 'demo',
-        name: 'John Doe',
-        username: 'user',
-        password: 'password',
-        monthlyCollection: 100,
-        cleaning: 50,
-        commonWork: 75,
-        funeralFund: 25,
-        total: 250
-      });
+    if (!isAuthenticated()) {
+      navigate('/login');
+      return;
     }
-  }, []);
+
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    signOut();
+    navigate('/login');
+  };
 
   const upcomingEvents = [
     { event: 'Christmas Celebration', date: 'Dec 25, 2025', time: '12:00 AM' },
@@ -42,7 +39,11 @@ const UserDashboard: React.FC = () => {
   ];
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100 flex items-center justify-center">
+        <p className="text-red-900 font-serif text-xl">Loading...</p>
+      </div>
+    );
   }
 
   return (
@@ -174,7 +175,7 @@ const UserDashboard: React.FC = () => {
             className="text-center"
           >
             <button
-              onClick={() => navigate('/login')}
+              onClick={handleLogout}
               className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
             >
               <LogOut className="w-6 h-6 mr-3" />

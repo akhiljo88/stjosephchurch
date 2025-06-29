@@ -5,9 +5,20 @@ import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
+import { submitContactForm } from '../lib/database';
 
 const Contact: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
 
   const contactInfo = [
     {
@@ -39,6 +50,40 @@ const Contact: React.FC = () => {
       color: "from-purple-600 to-purple-700"
     }
   ];
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const result = await submitContactForm(formData);
+      if (result) {
+        setSuccess(true);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setError('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
@@ -113,15 +158,40 @@ const Contact: React.FC = () => {
               <p className="text-gray-700 font-serif">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
             </div>
 
-            <form className="max-w-4xl mx-auto">
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-100 border border-green-300 rounded-xl"
+              >
+                <p className="text-green-700 text-sm font-serif text-center">Message sent successfully! We'll get back to you soon.</p>
+              </motion.div>
+            )}
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-100 border border-red-300 rounded-xl"
+              >
+                <p className="text-red-700 text-sm font-serif text-center">{error}</p>
+              </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label htmlFor="name" className="block text-red-900 font-semibold mb-2 font-serif">Full Name</label>
                   <input
                     type="text"
                     id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Your full name"
+                    required
+                    disabled={loading}
                   />
                 </div>
                 <div>
@@ -129,8 +199,13 @@ const Contact: React.FC = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="your.email@example.com"
+                    required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -141,15 +216,24 @@ const Contact: React.FC = () => {
                   <input
                     type="tel"
                     id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
                     placeholder="Your phone number"
+                    disabled={loading}
                   />
                 </div>
                 <div>
                   <label htmlFor="subject" className="block text-red-900 font-semibold mb-2 font-serif">Subject</label>
                   <select
                     id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                    required
+                    disabled={loading}
                   >
                     <option value="">Select a subject</option>
                     <option value="general">General Inquiry</option>
@@ -166,21 +250,27 @@ const Contact: React.FC = () => {
                 <label htmlFor="message" className="block text-red-900 font-semibold mb-2 font-serif">Message</label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={6}
+                  value={formData.message}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif resize-none"
                   placeholder="Please share your message, prayer request, or any questions you may have..."
+                  required
+                  disabled={loading}
                 ></textarea>
               </div>
 
               <div className="text-center">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: loading ? 1 : 1.05 }}
+                  whileTap={{ scale: loading ? 1 : 0.95 }}
                   type="submit"
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg"
+                  disabled={loading}
+                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-6 h-6 mr-3" />
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                 </motion.button>
               </div>
             </form>
