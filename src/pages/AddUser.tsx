@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Plus, Home, ArrowLeft, Upload, Image } from 'lucide-react';
+import { User, Plus, Home, ArrowLeft, Upload, Image, Shield, UserCheck } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -24,7 +24,8 @@ const AddUser: React.FC = () => {
     monthlyCollection: 100,
     cleaning: 50,
     commonWork: 75,
-    funeralFund: 25
+    funeralFund: 25,
+    userType: 'user' // 'user' or 'admin'
   });
 
   React.useEffect(() => {
@@ -91,7 +92,8 @@ const AddUser: React.FC = () => {
 
       const result = await addUser({
         ...formData,
-        familyPhoto: photoUrl
+        familyPhoto: photoUrl,
+        isAdmin: formData.userType === 'admin'
       });
       
       if (result) {
@@ -106,11 +108,11 @@ const AddUser: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === 'name' || name === 'username' || name === 'password' ? value : Number(value)
+      [name]: name === 'name' || name === 'username' || name === 'password' || name === 'userType' ? value : Number(value)
     });
   };
 
@@ -124,7 +126,7 @@ const AddUser: React.FC = () => {
       </AnimatePresence>
 
       <div className="pt-24 pb-12 px-4 md:px-6">
-        <div className="container mx-auto max-w-2xl">
+        <div className="container mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -177,6 +179,88 @@ const AddUser: React.FC = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* User Type Selection */}
+              <div>
+                <label className="block text-red-900 font-semibold mb-4 font-serif">
+                  User Type
+                </label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <motion.label
+                    whileHover={{ scale: 1.02 }}
+                    className={`relative flex items-center p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                      formData.userType === 'user'
+                        ? 'border-red-500 bg-red-50 shadow-lg'
+                        : 'border-amber-200 bg-amber-50 hover:border-red-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="userType"
+                      value="user"
+                      checked={formData.userType === 'user'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                      disabled={loading}
+                    />
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        formData.userType === 'user'
+                          ? 'bg-gradient-to-br from-blue-600 to-blue-700'
+                          : 'bg-gradient-to-br from-gray-400 to-gray-500'
+                      }`}>
+                        <UserCheck className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-red-900 font-serif">Add as User</h3>
+                        <p className="text-sm text-gray-600 font-serif">Regular member with user dashboard access</p>
+                      </div>
+                    </div>
+                    {formData.userType === 'user' && (
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                    )}
+                  </motion.label>
+
+                  <motion.label
+                    whileHover={{ scale: 1.02 }}
+                    className={`relative flex items-center p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                      formData.userType === 'admin'
+                        ? 'border-red-500 bg-red-50 shadow-lg'
+                        : 'border-amber-200 bg-amber-50 hover:border-red-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="userType"
+                      value="admin"
+                      checked={formData.userType === 'admin'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                      disabled={loading}
+                    />
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        formData.userType === 'admin'
+                          ? 'bg-gradient-to-br from-purple-600 to-purple-700'
+                          : 'bg-gradient-to-br from-gray-400 to-gray-500'
+                      }`}>
+                        <Shield className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-red-900 font-serif">Add as Admin</h3>
+                        <p className="text-sm text-gray-600 font-serif">Administrator with admin dashboard access</p>
+                      </div>
+                    </div>
+                    {formData.userType === 'admin' && (
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                    )}
+                  </motion.label>
+                </div>
+              </div>
+
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-red-900 font-semibold mb-2 font-serif">
@@ -230,7 +314,7 @@ const AddUser: React.FC = () => {
                 />
               </div>
 
-              {/* Family Photo Upload Section */}
+              {/* Family Photo Upload Section - Enlarged and Square */}
               <div>
                 <label className="block text-red-900 font-semibold mb-2 font-serif">
                   Family Photo
@@ -238,7 +322,7 @@ const AddUser: React.FC = () => {
                 <div className="space-y-4">
                   {photoPreview ? (
                     <div className="relative">
-                      <div className="w-full h-48 bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden">
+                      <div className="w-full aspect-square max-w-md mx-auto bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden shadow-lg">
                         <img
                           src={photoPreview}
                           alt="Family photo preview"
@@ -248,7 +332,7 @@ const AddUser: React.FC = () => {
                       <button
                         type="button"
                         onClick={removePhoto}
-                        className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
+                        className="absolute top-4 right-4 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
                         disabled={loading}
                       >
                         <Plus className="w-4 h-4 rotate-45" />
@@ -259,7 +343,7 @@ const AddUser: React.FC = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handlePhotoUploadClick}
-                      className="w-full h-48 bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
+                      className="w-full aspect-square max-w-md mx-auto bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
                     >
                       <div className="w-16 h-16 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-lg mb-4 group-hover:shadow-xl transition-shadow duration-300">
                         <Upload className="w-8 h-8 text-amber-100" />
@@ -297,83 +381,97 @@ const AddUser: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="monthlyCollection" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Monthly Collection (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="monthlyCollection"
-                    name="monthlyCollection"
-                    value={formData.monthlyCollection}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
+              {/* Only show financial fields for regular users */}
+              {formData.userType === 'user' && (
+                <>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="monthlyCollection" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Monthly Collection (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="monthlyCollection"
+                        name="monthlyCollection"
+                        value={formData.monthlyCollection}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
 
-                <div>
-                  <label htmlFor="cleaning" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Cleaning (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="cleaning"
-                    name="cleaning"
-                    value={formData.cleaning}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="cleaning" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Cleaning (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="cleaning"
+                        name="cleaning"
+                        value={formData.cleaning}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="commonWork" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Common Work (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="commonWork"
-                    name="commonWork"
-                    value={formData.commonWork}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="commonWork" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Common Work (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="commonWork"
+                        name="commonWork"
+                        value={formData.commonWork}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
 
-                <div>
-                  <label htmlFor="funeralFund" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Funeral Fund (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="funeralFund"
-                    name="funeralFund"
-                    value={formData.funeralFund}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="funeralFund" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Funeral Fund (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="funeralFund"
+                        name="funeralFund"
+                        value={formData.funeralFund}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
 
-              <div className="bg-amber-100 p-4 rounded-xl">
-                <p className="text-red-900 font-semibold font-serif">
-                  Total Amount: ₹{formData.monthlyCollection + formData.cleaning + formData.commonWork + formData.funeralFund}
-                </p>
-              </div>
+                  <div className="bg-amber-100 p-4 rounded-xl">
+                    <p className="text-red-900 font-semibold font-serif">
+                      Total Amount: ₹{formData.monthlyCollection + formData.cleaning + formData.commonWork + formData.funeralFund}
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {formData.userType === 'admin' && (
+                <div className="bg-purple-100 p-4 rounded-xl border border-purple-300">
+                  <p className="text-purple-900 font-semibold font-serif text-center">
+                    <Shield className="w-5 h-5 inline mr-2" />
+                    This user will have administrator privileges and access to the admin dashboard.
+                  </p>
+                </div>
+              )}
 
               <div className="text-center">
                 <motion.button
@@ -384,7 +482,7 @@ const AddUser: React.FC = () => {
                   className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 font-serif text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-6 h-6 mr-3" />
-                  {loading ? 'Adding User...' : 'Add User'}
+                  {loading ? 'Adding User...' : `Add ${formData.userType === 'admin' ? 'Admin' : 'User'}`}
                 </motion.button>
               </div>
             </form>

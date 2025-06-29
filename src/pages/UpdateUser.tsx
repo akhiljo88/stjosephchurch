@@ -172,7 +172,7 @@ const UpdateUser: React.FC = () => {
       </AnimatePresence>
 
       <div className="pt-24 pb-12 px-4 md:px-6">
-        <div className="container mx-auto max-w-2xl">
+        <div className="container mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -242,6 +242,7 @@ const UpdateUser: React.FC = () => {
                 />
               </div>
 
+              {/* Family Photo Upload Section - Enlarged and Square */}
               <div>
                 <label className="block text-red-900 font-semibold mb-2 font-serif">
                   Family Photo
@@ -249,7 +250,7 @@ const UpdateUser: React.FC = () => {
                 <div className="space-y-4">
                   {displayPhoto ? (
                     <div className="relative">
-                      <div className="w-full h-48 bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden">
+                      <div className="w-full aspect-square max-w-md mx-auto bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden shadow-lg">
                         <img
                           src={displayPhoto}
                           alt="Family photo"
@@ -259,13 +260,13 @@ const UpdateUser: React.FC = () => {
                       <button
                         type="button"
                         onClick={removePhoto}
-                        className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
+                        className="absolute top-4 right-4 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
                         disabled={loading}
                       >
                         <Plus className="w-4 h-4 rotate-45" />
                       </button>
                       {photoPreview && (
-                        <div className="absolute bottom-2 left-2 px-3 py-1 bg-green-600 text-white text-xs rounded-full">
+                        <div className="absolute bottom-4 left-4 px-3 py-1 bg-green-600 text-white text-xs rounded-full">
                           New photo selected
                         </div>
                       )}
@@ -275,7 +276,7 @@ const UpdateUser: React.FC = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handlePhotoUploadClick}
-                      className="w-full h-48 bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
+                      className="w-full aspect-square max-w-md mx-auto bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
                     >
                       <div className="w-16 h-16 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-lg mb-4 group-hover:shadow-xl transition-shadow duration-300">
                         <Upload className="w-8 h-8 text-amber-100" />
@@ -325,83 +326,96 @@ const UpdateUser: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="monthlyCollection" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Monthly Collection (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="monthlyCollection"
-                    name="monthlyCollection"
-                    value={formData.monthlyCollection}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
+              {/* Only show financial fields for non-admin users */}
+              {!user.is_admin && (
+                <>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="monthlyCollection" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Monthly Collection (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="monthlyCollection"
+                        name="monthlyCollection"
+                        value={formData.monthlyCollection}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
 
-                <div>
-                  <label htmlFor="cleaning" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Cleaning (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="cleaning"
-                    name="cleaning"
-                    value={formData.cleaning}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="cleaning" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Cleaning (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="cleaning"
+                        name="cleaning"
+                        value={formData.cleaning}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="commonWork" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Common Work (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="commonWork"
-                    name="commonWork"
-                    value={formData.commonWork}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="commonWork" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Common Work (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="commonWork"
+                        name="commonWork"
+                        value={formData.commonWork}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
 
-                <div>
-                  <label htmlFor="funeralFund" className="block text-red-900 font-semibold mb-2 font-serif">
-                    Funeral Fund (₹)
-                  </label>
-                  <input
-                    type="number"
-                    id="funeralFund"
-                    name="funeralFund"
-                    value={formData.funeralFund}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
-                    min="0"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="funeralFund" className="block text-red-900 font-semibold mb-2 font-serif">
+                        Funeral Fund (₹)
+                      </label>
+                      <input
+                        type="number"
+                        id="funeralFund"
+                        name="funeralFund"
+                        value={formData.funeralFund}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif"
+                        min="0"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
 
-              <div className="bg-amber-100 p-4 rounded-xl">
-                <p className="text-red-900 font-semibold font-serif">
-                  Total Amount: ₹{formData.monthlyCollection + formData.cleaning + formData.commonWork + formData.funeralFund}
-                </p>
-              </div>
+                  <div className="bg-amber-100 p-4 rounded-xl">
+                    <p className="text-red-900 font-semibold font-serif">
+                      Total Amount: ₹{formData.monthlyCollection + formData.cleaning + formData.commonWork + formData.funeralFund}
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {user.is_admin && (
+                <div className="bg-purple-100 p-4 rounded-xl border border-purple-300">
+                  <p className="text-purple-900 font-semibold font-serif text-center">
+                    This is an administrator account. Financial amounts are not applicable.
+                  </p>
+                </div>
+              )}
 
               <div className="flex gap-4 justify-center">
                 <motion.button

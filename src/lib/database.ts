@@ -28,19 +28,26 @@ export const addUser = async (userData: {
   commonWork: number;
   funeralFund: number;
   familyPhoto?: string | null;
+  isAdmin?: boolean;
 }): Promise<User | null> => {
-  const total = userData.monthlyCollection + userData.cleaning + userData.commonWork + userData.funeralFund;
+  // For admin users, set financial amounts to 0
+  const monthlyCollection = userData.isAdmin ? 0 : userData.monthlyCollection;
+  const cleaning = userData.isAdmin ? 0 : userData.cleaning;
+  const commonWork = userData.isAdmin ? 0 : userData.commonWork;
+  const funeralFund = userData.isAdmin ? 0 : userData.funeralFund;
+  
+  const total = monthlyCollection + cleaning + commonWork + funeralFund;
   
   const userInsert: UserInsert = {
     name: userData.name,
     username: userData.username,
     password: userData.password,
-    monthly_collection: userData.monthlyCollection,
-    cleaning: userData.cleaning,
-    common_work: userData.commonWork,
-    funeral_fund: userData.funeralFund,
+    monthly_collection: monthlyCollection,
+    cleaning: cleaning,
+    common_work: commonWork,
+    funeral_fund: funeralFund,
     total: total,
-    is_admin: false,
+    is_admin: userData.isAdmin || false,
     family_photo: userData.familyPhoto || null
   };
 
