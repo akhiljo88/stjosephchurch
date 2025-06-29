@@ -16,6 +16,9 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import UserPanel from './pages/UserPanel';
 import AdminDashboard from './pages/AdminDashboard';
+import UserDashboard from './pages/UserDashboard';
+import AddUser from './pages/AddUser';
+import UpdateUser from './pages/UpdateUser';
 
 function App() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -23,34 +26,24 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-amber-50">
-        <Header onMenuClick={() => setIsNavOpen(true)} />
-        <AnimatePresence>
-          {isNavOpen && (
-            <Navigation onClose={() => setIsNavOpen(false)} />
-          )}
-        </AnimatePresence>
-        
-        <motion.main
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/our-history" element={<OurHistory />} />
-            <Route path="/administration" element={<Administration />} />
-            <Route path="/admin-panel" element={<AdminPanel />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/holy-communities" element={<HolyCommunities />} />
-            <Route path="/families" element={<Families />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/user-panel" element={<UserPanel />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          </Routes>
-        </motion.main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/our-history" element={<OurHistory />} />
+          <Route path="/administration" element={<Administration />} />
+          <Route path="/admin-panel" element={<AdminPanel />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/holy-communities" element={<HolyCommunities />} />
+          <Route path="/families" element={<Families />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/user-panel" element={<UserPanel />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/add-user" element={<AddUser />} />
+          <Route path="/update-user/:id" element={<UpdateUser />} />
+        </Routes>
       </div>
     </Router>
   );

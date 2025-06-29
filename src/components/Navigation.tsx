@@ -25,7 +25,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div
@@ -33,7 +33,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-900 to-red-800 rounded-t-3xl shadow-2xl"
+        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-900 via-red-800 to-red-700 rounded-t-3xl shadow-2xl border-t-4 border-amber-400"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -43,7 +43,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
               onClick={onClose}
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
-              className="p-2 bg-amber-100 hover:bg-amber-200 rounded-full transition-colors duration-300"
+              className="p-2 bg-amber-100 hover:bg-amber-200 rounded-full transition-colors duration-300 shadow-lg"
             >
               <X className="w-6 h-6 text-red-800" />
             </motion.button>
@@ -62,10 +62,10 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
                   <Link
                     to={item.path}
                     onClick={onClose}
-                    className="flex flex-col items-center p-4 bg-amber-100/10 hover:bg-amber-100/20 rounded-xl border border-amber-400/30 transition-all duration-300 hover:scale-105"
+                    className="flex flex-col items-center p-4 bg-gradient-to-br from-amber-100/20 to-amber-200/20 hover:from-amber-100/30 hover:to-amber-200/30 rounded-xl border border-amber-400/40 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm"
                   >
                     <IconComponent className="w-8 h-8 text-amber-300 mb-2" />
-                    <span className="text-amber-100 text-sm font-medium text-center">{item.label}</span>
+                    <span className="text-amber-100 text-sm font-medium text-center font-serif">{item.label}</span>
                   </Link>
                 </motion.div>
               );

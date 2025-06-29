@@ -1,13 +1,32 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, Edit, Trash2 } from 'lucide-react';
+import Header from '../components/Header';
+import Navigation from '../components/Navigation';
+import Copyright from '../components/Copyright';
+import { User } from '../types/User';
+import { getUsers, deleteUser } from '../utils/userStorage';
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    setUsers(getUsers());
+  }, []);
+
+  const handleDeleteUser = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      if (deleteUser(id)) {
+        setUsers(getUsers());
+      }
+    }
+  };
 
   const dashboardStats = [
-    { label: 'Total Members', value: '342', icon: Users, color: 'from-blue-600 to-blue-700' },
+    { label: 'Total Members', value: users.length.toString(), icon: Users, color: 'from-blue-600 to-blue-700' },
     { label: 'Active Events', value: '8', icon: Calendar, color: 'from-green-600 to-green-700' },
     { label: 'Prayer Requests', value: '23', icon: Heart, color: 'from-red-600 to-red-700' },
     { label: 'Messages', value: '15', icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
@@ -21,95 +40,190 @@ const AdminDashboard: React.FC = () => {
     { activity: 'Mass attendance updated - Sunday 9 AM', time: '2 days ago' }
   ];
 
-  const quickActions = [
-    { title: 'Add Event', icon: Calendar, color: 'from-blue-600 to-blue-700' },
-    { title: 'Send Announcement', icon: MessageSquare, color: 'from-green-600 to-green-700' },
-    { title: 'Manage Members', icon: Users, color: 'from-purple-600 to-purple-700' },
-    { title: 'View Reports', icon: BarChart3, color: 'from-amber-600 to-amber-700' }
-  ];
-
   return (
-    <div className="min-h-screen pt-24 pb-12 px-6 bg-gradient-to-b from-amber-50 to-amber-100">
-      <div className="container mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex justify-between items-center mb-12"
-        >
-          <div>
-            <h1 className="text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
-            <p className="text-gray-700 font-serif">Welcome back, Administrator</p>
-          </div>
-          <button
-            onClick={() => navigate('/login')}
-            className="flex items-center px-6 py-3 bg-red-800 hover:bg-red-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif"
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
+      <Header onMenuClick={() => setIsNavOpen(true)} />
+      <AnimatePresence>
+        {isNavOpen && (
+          <Navigation onClose={() => setIsNavOpen(false)} />
+        )}
+      </AnimatePresence>
+
+      <div className="pt-24 pb-12 px-4 md:px-6">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col md:flex-row justify-between items-center mb-12"
           >
-            <LogOut className="w-5 h-5 mr-2" />
-            Logout
-          </button>
-        </motion.div>
-
-        {/* Dashboard Statistics */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="grid md:grid-cols-4 gap-6 mb-12"
-        >
-          {dashboardStats.map((stat, index) => {
-            const IconComponent = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 text-center shadow-xl border-2 border-amber-200 cursor-pointer"
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
+              <p className="text-gray-700 font-serif">Welcome back, Administrator</p>
+            </div>
+            <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center px-4 py-2 bg-blue-800 hover:bg-blue-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif"
               >
-                <div className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <IconComponent className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-red-900 mb-2 font-serif">{stat.value}</h3>
-                <p className="text-amber-600 font-serif">{stat.label}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                <Home className="w-4 h-4 mr-2" />
+                Home
+              </button>
+              <button
+                onClick={() => navigate('/login')}
+                className="flex items-center px-4 py-2 bg-red-800 hover:bg-red-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </button>
+            </div>
+          </motion.div>
 
-        {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Quick Actions</h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {quickActions.map((action, index) => {
-              const IconComponent = action.icon;
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12"
+          >
+            {dashboardStats.map((stat, index) => {
+              const IconComponent = stat.icon;
               return (
-                <motion.button
-                  key={action.title}
+                <motion.div
+                  key={stat.label}
                   whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+                  className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-4 md:p-6 text-center shadow-xl border-2 border-amber-200 cursor-pointer"
                 >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${action.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <IconComponent className="w-8 h-8 text-white" />
+                  <div className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${stat.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <IconComponent className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
-                  <h3 className="font-semibold text-red-900 font-serif">{action.title}</h3>
-                </motion.button>
+                  <h3 className="text-2xl md:text-3xl font-bold text-red-900 mb-2 font-serif">{stat.value}</h3>
+                  <p className="text-amber-600 font-serif text-sm md:text-base">{stat.label}</p>
+                </motion.div>
               );
             })}
-          </div>
-        </motion.div>
+          </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Recent Activities */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mb-12"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/add-user')}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add User</h3>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Events</h3>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Families</h3>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Services</h3>
+              </motion.button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-8 border-4 border-amber-200"
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200 overflow-x-auto">
+              <table className="w-full min-w-[800px]">
+                <thead>
+                  <tr className="border-b-2 border-amber-300">
+                    <th className="text-left p-3 text-red-900 font-serif">Name</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Monthly Collection</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Cleaning</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Common Work</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Funeral Fund</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Total</th>
+                    <th className="text-left p-3 text-red-900 font-serif">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id} className="border-b border-amber-200 hover:bg-amber-100">
+                      <td className="p-3 font-serif text-red-900">{user.name}</td>
+                      <td className="p-3 font-serif text-red-900">₹{user.monthlyCollection}</td>
+                      <td className="p-3 font-serif text-red-900">₹{user.cleaning}</td>
+                      <td className="p-3 font-serif text-red-900">₹{user.commonWork}</td>
+                      <td className="p-3 font-serif text-red-900">₹{user.funeralFund}</td>
+                      <td className="p-3 font-serif text-red-900 font-bold">₹{user.total}</td>
+                      <td className="p-3">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => navigate(`/update-user/${user.id}`)}
+                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(user.id)}
+                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {users.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="p-8 text-center text-gray-500 font-serif">
+                        No users found. Add your first user to get started.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Recent Activities</h2>
             <div className="space-y-4">
@@ -124,64 +238,9 @@ const AdminDashboard: React.FC = () => {
               ))}
             </div>
           </motion.div>
-
-          {/* Management Panel */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-8 border-4 border-amber-200"
-          >
-            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Management</h2>
-            <div className="space-y-4">
-              <button className="w-full p-4 bg-red-800 hover:bg-red-900 text-amber-100 rounded-xl transition-colors duration-300 flex items-center justify-between font-serif">
-                <span>Manage Events</span>
-                <Calendar className="w-5 h-5" />
-              </button>
-              <button className="w-full p-4 bg-blue-800 hover:bg-blue-900 text-amber-100 rounded-xl transition-colors duration-300 flex items-center justify-between font-serif">
-                <span>Member Directory</span>
-                <Users className="w-5 h-5" />
-              </button>
-              <button className="w-full p-4 bg-green-800 hover:bg-green-900 text-amber-100 rounded-xl transition-colors duration-300 flex items-center justify-between font-serif">
-                <span>Prayer Requests</span>
-                <Heart className="w-5 h-5" />
-              </button>
-              <button className="w-full p-4 bg-purple-800 hover:bg-purple-900 text-amber-100 rounded-xl transition-colors duration-300 flex items-center justify-between font-serif">
-                <span>Messages</span>
-                <MessageSquare className="w-5 h-5" />
-              </button>
-              <button className="w-full p-4 bg-amber-700 hover:bg-amber-800 text-amber-100 rounded-xl transition-colors duration-300 flex items-center justify-between font-serif">
-                <span>Settings</span>
-                <Settings className="w-5 h-5" />
-              </button>
-            </div>
-          </motion.div>
         </div>
-
-        {/* System Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="mt-12 bg-gradient-to-br from-red-800 to-red-900 rounded-3xl shadow-2xl p-8 text-center"
-        >
-          <h2 className="text-2xl font-bold text-amber-100 mb-6 font-serif">System Status</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-amber-100 p-4 rounded-xl">
-              <h3 className="font-bold text-red-900 mb-2 font-serif">Website</h3>
-              <span className="inline-block px-3 py-1 bg-green-500 text-white rounded-full text-sm font-serif">Online</span>
-            </div>
-            <div className="bg-amber-100 p-4 rounded-xl">
-              <h3 className="font-bold text-red-900 mb-2 font-serif">Database</h3>
-              <span className="inline-block px-3 py-1 bg-green-500 text-white rounded-full text-sm font-serif">Connected</span>
-            </div>
-            <div className="bg-amber-100 p-4 rounded-xl">
-              <h3 className="font-bold text-red-900 mb-2 font-serif">Backups</h3>
-              <span className="inline-block px-3 py-1 bg-green-500 text-white rounded-full text-sm font-serif">Updated</span>
-            </div>
-          </div>
-        </motion.div>
       </div>
+      <Copyright />
     </div>
   );
 };

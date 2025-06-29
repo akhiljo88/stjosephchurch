@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import SocialMedia from '../components/SocialMedia';
+import Copyright from '../components/Copyright';
 
 const Home: React.FC = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-fixed"
         style={{
@@ -16,7 +16,6 @@ const Home: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
       </div>
 
-      {/* Floating Animated Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(6)].map((_, i) => (
           <motion.div
@@ -41,7 +40,6 @@ const Home: React.FC = () => {
         ))}
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
@@ -103,6 +101,7 @@ const Home: React.FC = () => {
           />
         </motion.div>
       </div>
+      <Copyright />
     </div>
   );
 };
