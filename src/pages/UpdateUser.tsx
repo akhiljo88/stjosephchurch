@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
-import { User, Save, Home, ArrowLeft, X } from 'lucide-react';
+import { User, Save, Home, ArrowLeft, X, Upload, Image, Plus } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -18,6 +18,11 @@ const UpdateUser: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [familyPhoto, setFamilyPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [currentPhoto, setCurrentPhoto] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [formData, setFormData] = useState({
     name: '',
     monthlyCollection: 0,
@@ -44,6 +49,7 @@ const UpdateUser: React.FC = () => {
       const userData = await getUserById(id);
       if (userData) {
         setUser(userData);
+        setCurrentPhoto(userData.family_photo);
         setFormData({
           name: userData.name,
           monthlyCollection: userData.monthly_collection,
@@ -60,6 +66,43 @@ const UpdateUser: React.FC = () => {
     }
   };
 
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setError('Please select a valid image file.');
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size should be less than 5MB.');
+        return;
+      }
+
+      setFamilyPhoto(file);
+      setError('');
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePhotoUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removePhoto = () => {
+    setFamilyPhoto(null);
+    setPhotoPreview(null);
+    setCurrentPhoto(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) return;
@@ -68,7 +111,23 @@ const UpdateUser: React.FC = () => {
     setError('');
 
     try {
-      const result = await updateUser(id, formData);
+      let photoUrl = currentPhoto;
+      
+      if (familyPhoto) {
+        const reader = new FileReader();
+        photoUrl = await new Promise<string>((resolve) => {
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(familyPhoto);
+        });
+      } else if (photoPreview === null && currentPhoto) {
+        photoUrl = null;
+      }
+
+      const result = await updateUser(id, {
+        ...formData,
+        familyPhoto: photoUrl
+      });
+      
       if (result) {
         navigate('/admin-dashboard');
       } else {
@@ -100,6 +159,8 @@ const UpdateUser: React.FC = () => {
       </div>
     );
   }
+
+  const displayPhoto = photoPreview || currentPhoto;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
@@ -179,6 +240,89 @@ const UpdateUser: React.FC = () => {
                   required
                   disabled={loading}
                 />
+              </div>
+
+              <div>
+                <label className="block text-red-900 font-semibold mb-2 font-serif">
+                  Family Photo
+                </label>
+                <div className="space-y-4">
+                  {displayPhoto ? (
+                    <div className="relative">
+                      <div className="w-full h-48 bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden">
+                        <img
+                          src={displayPhoto}
+                          alt="Family photo"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removePhoto}
+                        className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
+                        disabled={loading}
+                      >
+                        <Plus className="w-4 h-4 rotate-45" />
+                      </button>
+                      {photoPreview && (
+                        <div className="absolute bottom-2 left-2 px-3 py-1 bg-green-600 text-white text-xs rounded-full">
+                          New photo selected
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handlePhotoUploadClick}
+                      className="w-full h-48 bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
+                    >
+                      <div className="w-16 h-16 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-lg mb-4 group-hover:shadow-xl transition-shadow duration-300">
+                        <Upload className="w-8 h-8 text-amber-100" />
+                      </div>
+                      <p className="text-red-900 font-semibold font-serif mb-2">Upload Family Photo</p>
+                      <p className="text-amber-600 text-sm font-serif text-center px-4">
+                        Click to select an image from your device
+                      </p>
+                      <p className="text-amber-500 text-xs font-serif mt-2">
+                        Supported: JPG, PNG, GIF (Max 5MB)
+                      </p>
+                    </motion.div>
+                  )}
+                  
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    disabled={loading}
+                  />
+                  
+                  {!displayPhoto && (
+                    <button
+                      type="button"
+                      onClick={handlePhotoUploadClick}
+                      className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-serif"
+                      disabled={loading}
+                    >
+                      <Image className="w-5 h-5 mr-2" />
+                      Choose Photo from Gallery
+                    </button>
+                  )}
+                  
+                  {displayPhoto && (
+                    <button
+                      type="button"
+                      onClick={handlePhotoUploadClick}
+                      className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-serif"
+                      disabled={loading}
+                    >
+                      <Upload className="w-5 h-5 mr-2" />
+                      Change Photo
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
