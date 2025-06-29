@@ -24,6 +24,7 @@ export type Database = {
           funeral_fund: number;
           total: number;
           is_admin: boolean;
+          family_photo: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -38,6 +39,7 @@ export type Database = {
           funeral_fund?: number;
           total?: number;
           is_admin?: boolean;
+          family_photo?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -52,6 +54,7 @@ export type Database = {
           funeral_fund?: number;
           total?: number;
           is_admin?: boolean;
+          family_photo?: string | null;
           created_at?: string;
           updated_at?: string;
         };

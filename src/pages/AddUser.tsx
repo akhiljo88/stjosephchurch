@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Plus, Home, ArrowLeft } from 'lucide-react';
+import { User, Plus, Home, ArrowLeft, Upload, Image } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -13,6 +13,10 @@ const AddUser: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [familyPhoto, setFamilyPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -29,13 +33,67 @@ const AddUser: React.FC = () => {
     }
   }, [navigate]);
 
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please select a valid image file.');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size should be less than 5MB.');
+        return;
+      }
+
+      setFamilyPhoto(file);
+      setError('');
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePhotoUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removePhoto = () => {
+    setFamilyPhoto(null);
+    setPhotoPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const result = await addUser(formData);
+      let photoUrl = null;
+      
+      // If a photo is selected, convert to base64 for storage
+      if (familyPhoto) {
+        const reader = new FileReader();
+        photoUrl = await new Promise<string>((resolve) => {
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(familyPhoto);
+        });
+      }
+
+      const result = await addUser({
+        ...formData,
+        familyPhoto: photoUrl
+      });
+      
       if (result) {
         navigate('/admin-dashboard');
       } else {
@@ -170,6 +228,73 @@ const AddUser: React.FC = () => {
                   required
                   disabled={loading}
                 />
+              </div>
+
+              {/* Family Photo Upload Section */}
+              <div>
+                <label className="block text-red-900 font-semibold mb-2 font-serif">
+                  Family Photo
+                </label>
+                <div className="space-y-4">
+                  {photoPreview ? (
+                    <div className="relative">
+                      <div className="w-full h-48 bg-amber-100 rounded-xl border-2 border-amber-200 overflow-hidden">
+                        <img
+                          src={photoPreview}
+                          alt="Family photo preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removePhoto}
+                        className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-300"
+                        disabled={loading}
+                      >
+                        <Plus className="w-4 h-4 rotate-45" />
+                      </button>
+                    </div>
+                  ) : (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handlePhotoUploadClick}
+                      className="w-full h-48 bg-amber-100 rounded-xl border-2 border-dashed border-amber-300 hover:border-red-500 cursor-pointer transition-colors duration-300 flex flex-col items-center justify-center group"
+                    >
+                      <div className="w-16 h-16 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-lg mb-4 group-hover:shadow-xl transition-shadow duration-300">
+                        <Upload className="w-8 h-8 text-amber-100" />
+                      </div>
+                      <p className="text-red-900 font-semibold font-serif mb-2">Upload Family Photo</p>
+                      <p className="text-amber-600 text-sm font-serif text-center px-4">
+                        Click to select an image from your device
+                      </p>
+                      <p className="text-amber-500 text-xs font-serif mt-2">
+                        Supported: JPG, PNG, GIF (Max 5MB)
+                      </p>
+                    </motion.div>
+                  )}
+                  
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    disabled={loading}
+                  />
+                  
+                  {!photoPreview && (
+                    <button
+                      type="button"
+                      onClick={handlePhotoUploadClick}
+                      className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-serif"
+                      disabled={loading}
+                    >
+                      <Image className="w-5 h-5 mr-2" />
+                      Choose Photo from Gallery
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">

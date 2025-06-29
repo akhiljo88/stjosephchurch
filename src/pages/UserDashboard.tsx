@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Calendar, Heart, LogOut, Home } from 'lucide-react';
+import { User, Calendar, Heart, LogOut, Home, Upload, Image } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -122,10 +122,28 @@ const UserDashboard: React.FC = () => {
             >
               <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Family Photo</h2>
               <div className="bg-amber-100 rounded-2xl p-8 text-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="w-16 h-16 text-amber-100" />
-                </div>
-                <p className="text-red-900 font-serif">Upload your family photo</p>
+                {user.familyPhoto ? (
+                  <div className="space-y-4">
+                    <div className="w-full h-48 bg-white rounded-xl overflow-hidden shadow-lg">
+                      <img
+                        src={user.familyPhoto}
+                        alt="Family photo"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-red-900 font-serif text-sm">Your family photo</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="w-32 h-32 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Image className="w-16 h-16 text-amber-100" />
+                    </div>
+                    <p className="text-red-900 font-serif">No family photo uploaded</p>
+                    <p className="text-amber-600 font-serif text-sm">
+                      Contact admin to upload your family photo
+                    </p>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>

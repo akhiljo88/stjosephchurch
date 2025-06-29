@@ -27,6 +27,7 @@ export const addUser = async (userData: {
   cleaning: number;
   commonWork: number;
   funeralFund: number;
+  familyPhoto?: string | null;
 }): Promise<User | null> => {
   const total = userData.monthlyCollection + userData.cleaning + userData.commonWork + userData.funeralFund;
   
@@ -39,7 +40,8 @@ export const addUser = async (userData: {
     common_work: userData.commonWork,
     funeral_fund: userData.funeralFund,
     total: total,
-    is_admin: false
+    is_admin: false,
+    family_photo: userData.familyPhoto || null
   };
 
   const { data, error } = await supabase
@@ -62,6 +64,7 @@ export const updateUser = async (id: string, updates: {
   cleaning?: number;
   commonWork?: number;
   funeralFund?: number;
+  familyPhoto?: string | null;
 }): Promise<User | null> => {
   const userUpdate: UserUpdate = {
     updated_at: new Date().toISOString()
@@ -72,6 +75,7 @@ export const updateUser = async (id: string, updates: {
   if (updates.cleaning !== undefined) userUpdate.cleaning = updates.cleaning;
   if (updates.commonWork !== undefined) userUpdate.common_work = updates.commonWork;
   if (updates.funeralFund !== undefined) userUpdate.funeral_fund = updates.funeralFund;
+  if (updates.familyPhoto !== undefined) userUpdate.family_photo = updates.familyPhoto;
 
   // Calculate new total
   if (updates.monthlyCollection !== undefined || updates.cleaning !== undefined || 

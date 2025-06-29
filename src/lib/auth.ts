@@ -10,6 +10,7 @@ export interface User {
   funeralFund: number;
   total: number;
   isAdmin: boolean;
+  familyPhoto?: string | null;
 }
 
 export interface SignInResult {
@@ -41,7 +42,8 @@ export const signIn = async (username: string, password: string): Promise<SignIn
       commonWork: data.common_work,
       funeralFund: data.funeral_fund,
       total: data.total,
-      isAdmin: data.is_admin
+      isAdmin: data.is_admin,
+      familyPhoto: data.family_photo
     };
 
     // Store user in localStorage for session management
