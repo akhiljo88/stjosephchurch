@@ -18,15 +18,15 @@ const HolyCommunities: React.FC = () => {
       activities: ["Youth Leadership", "Social Service", "Faith Formation"]
     },
     {
-      name: "Women's Cell",
+      name: "Mathruvedi",
       description: "Supporting women in their spiritual journey while strengthening family and community bonds.",
       icon: Heart,
       color: "from-pink-600 to-pink-700",
       activities: ["Prayer Groups", "Community Outreach", "Family Support"]
     },
     {
-      name: "Men's Fellowship",
-      description: "Building brotherhood among men through faith sharing and community involvement.",
+      name: "Mission League",
+      description: "Indigenous pious organization for Catholic children.",
       icon: Star,
       color: "from-green-600 to-green-700",
       activities: ["Men's Retreat", "Community Projects", "Spiritual Growth"]
@@ -46,7 +46,7 @@ const HolyCommunities: React.FC = () => {
       activities: ["Sunday Mass", "Special Events", "Music Ministry"]
     },
     {
-      name: "Charity Committee",
+      name: "Thalassery Social Service Society",
       description: "Serving the needy and marginalized through various charitable activities.",
       icon: Hands,
       color: "from-red-600 to-red-700",
