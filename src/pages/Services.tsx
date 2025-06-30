@@ -12,7 +12,7 @@ const Services: React.FC = () => {
   const services = [
     {
       title: "Holy Mass",
-      description: "Daily Mass at 6:30 AM and Sunday Mass at 7:00 AM, 9:00 AM, and 6:00 PM",
+      description: "Daily Mass at 6:30 AM and Sunday Mass at 8:00 AM, 10:15 AM",
       icon: Church,
       color: "from-red-600 to-red-700"
     },
