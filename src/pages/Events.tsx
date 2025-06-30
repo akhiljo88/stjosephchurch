@@ -10,10 +10,10 @@ const Events: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const massTimings = [
-    { day: "Sunday", timings: ["7:00 AM", "9:00 AM", "6:00 PM"], special: "Family Mass at 9:00 AM" },
-    { day: "Monday - Saturday", timings: ["6:30 AM"], special: "Daily Morning Mass" },
-    { day: "First Friday", timings: ["6:30 AM", "7:00 PM"], special: "Sacred Heart Devotion" },
-    { day: "Saturday Evening", timings: ["6:00 PM"], special: "Vigil Mass" }
+    { day: "Sunday", timings: ["8:00 AM", "10:15 AM"], special: "Student Mass at 10:15 AM" },
+    { day: "Monday - Saturday", timings: ["6:30 AM"], special: "Friday Evening at 4:30 PM" },
+    { day: "First Friday", timings: ["4:00 PM"], special: "Adoration" },
+    { day: "Second Sunday", timings: ["9:30 AM"], special: "Parish Council Meeting" }
   ];
 
   const upcomingEvents = [
@@ -36,32 +36,32 @@ const Events: React.FC = () => {
     {
       title: "Feast of St. Joseph",
       date: "March 19, 2026",
-      time: "7:00 AM & 6:00 PM",
+      time: "6:30 AM",
       description: "Special celebration honoring our patron saint with festive masses and community gathering.",
       icon: Heart,
       color: "from-amber-600 to-amber-700"
     },
     {
-      title: "Easter Vigil",
+      title: "Easter Resurrection",
       date: "April 12, 2026",
-      time: "8:00 PM",
+      time: "3:00 AM",
       description: "The most sacred celebration of the Church - Christ's resurrection from the dead.",
       icon: Star,
       color: "from-green-600 to-green-700"
     },
     {
       title: "Parish Annual Retreat",
-      date: "July 15-17, 2026",
-      time: "9:00 AM - 5:00 PM",
-      description: "Three-day spiritual retreat for deepening faith and community bonding.",
+      date: "March, 2026",
+      time: "4:00 PM - 9:00 PM",
+      description: "Four-day spiritual retreat for deepening faith and community bonding.",
       icon: Calendar,
       color: "from-purple-600 to-purple-700"
     },
     {
-      title: "Youth Festival",
-      date: "September 10, 2026",
-      time: "3:00 PM - 8:00 PM",
-      description: "Annual celebration featuring youth performances, games, and fellowship.",
+      title: "Church Festival",
+      date: "February, 2026",
+      time: "4:00 PM - 8:00 PM",
+      description: "Annual celebration featuring prayers, novenas, performances, and fellowship.",
       icon: Heart,
       color: "from-pink-600 to-pink-700"
     }
