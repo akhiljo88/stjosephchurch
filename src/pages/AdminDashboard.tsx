@@ -18,7 +18,7 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is admin
+    // Check if user is admin, redirect to login if not authenticated or not admin
     if (!isAdmin()) {
       navigate('/login');
       return;

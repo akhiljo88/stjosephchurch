@@ -60,8 +60,12 @@ export const signIn = async (username: string, password: string): Promise<SignIn
       // Explicitly exclude familyPhoto to prevent localStorage quota issues
     };
 
-    // Store user in localStorage for session management (without familyPhoto)
+    // Store user in localStorage for persistent session management
     localStorage.setItem('currentUser', JSON.stringify(userForStorage));
+    
+    // Also store authentication state separately for quick checks
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userRole', data.is_admin ? 'admin' : 'user');
 
     return { 
       success: true, 
@@ -122,13 +126,27 @@ export const getCurrentUserWithPhoto = async (): Promise<User | null> => {
 
 export const signOut = (): void => {
   localStorage.removeItem('currentUser');
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('userRole');
 };
 
 export const isAuthenticated = (): boolean => {
-  return getCurrentUser() !== null;
+  // Check both the user data and authentication flag for reliability
+  const authFlag = localStorage.getItem('isAuthenticated');
+  const user = getCurrentUser();
+  return authFlag === 'true' && user !== null;
 };
 
 export const isAdmin = (): boolean => {
+  // Check both the stored role and user data for reliability
+  const userRole = localStorage.getItem('userRole');
   const user = getCurrentUser();
-  return user?.isAdmin || false;
+  return userRole === 'admin' && user?.isAdmin === true;
+};
+
+export const isUser = (): boolean => {
+  // Check if authenticated but not admin
+  const userRole = localStorage.getItem('userRole');
+  const user = getCurrentUser();
+  return userRole === 'user' && user?.isAdmin === false;
 };

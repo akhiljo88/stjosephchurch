@@ -5,7 +5,7 @@ import { User, Calendar, Heart, LogOut, Home, Upload, Image } from 'lucide-react
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getCurrentUserWithPhoto, signOut, isAuthenticated } from '../lib/auth';
+import { getCurrentUserWithPhoto, signOut, isAuthenticated, isUser } from '../lib/auth';
 import type { User as UserType } from '../lib/auth';
 
 const UserDashboard: React.FC = () => {
@@ -15,8 +15,15 @@ const UserDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is authenticated and is a regular user (not admin)
     if (!isAuthenticated()) {
       navigate('/login');
+      return;
+    }
+
+    // If user is admin, redirect to admin dashboard
+    if (!isUser()) {
+      navigate('/admin-dashboard');
       return;
     }
 

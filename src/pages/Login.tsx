@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, LogIn } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { signIn } from '../lib/auth';
+import { signIn, isAuthenticated, isAdmin } from '../lib/auth';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +16,17 @@ const Login: React.FC = () => {
     username: '',
     password: ''
   });
+
+  // Check if user is already logged in and redirect accordingly
+  useEffect(() => {
+    if (isAuthenticated()) {
+      if (isAdmin()) {
+        navigate('/admin-dashboard');
+      } else {
+        navigate('/user-dashboard');
+      }
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

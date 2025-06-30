@@ -1,13 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck } from 'lucide-react';
+import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck, Shield, User } from 'lucide-react';
+import { isAuthenticated, isAdmin } from '../lib/auth';
 
 interface NavigationProps {
   onClose: () => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
+  const authenticated = isAuthenticated();
+  const adminUser = isAdmin();
+
   const menuItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/about', label: 'About Us', icon: Church },
@@ -16,9 +20,31 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
     { path: '/holy-communities', label: 'Holy Communities', icon: Users },
     { path: '/families', label: 'Our Families', icon: Heart },
     { path: '/events', label: 'Events & Timings', icon: Calendar },
-    { path: '/contact', label: 'Connect With Us', icon: Phone },
-    { path: '/login', label: 'Login', icon: UserCheck }
+    { path: '/contact', label: 'Connect With Us', icon: Phone }
   ];
+
+  // Add appropriate dashboard/login item based on authentication state
+  if (authenticated) {
+    if (adminUser) {
+      menuItems.push({ 
+        path: '/admin-dashboard', 
+        label: 'Admin Dashboard', 
+        icon: Shield 
+      });
+    } else {
+      menuItems.push({ 
+        path: '/user-dashboard', 
+        label: 'User Dashboard', 
+        icon: User 
+      });
+    }
+  } else {
+    menuItems.push({ 
+      path: '/login', 
+      label: 'Login', 
+      icon: UserCheck 
+    });
+  }
 
   return (
     <motion.div
@@ -52,22 +78,31 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
           <div className="grid grid-cols-2 gap-4 mb-6">
             {menuItems.map((item, index) => {
               const IconComponent = item.icon;
+              const isDashboardOrLogin = item.label.includes('Dashboard') || item.label === 'Login';
+              
               return (
                 <motion.div
                   key={item.path}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={item.label === 'Login' ? 'col-span-2 flex justify-center' : ''}
+                  className={isDashboardOrLogin ? 'col-span-2 flex justify-center' : ''}
                 >
                   <Link
                     to={item.path}
                     onClick={onClose}
                     className={`flex flex-col items-center p-4 bg-gradient-to-br from-amber-100/20 to-amber-200/20 hover:from-amber-100/30 hover:to-amber-200/30 rounded-xl border border-amber-400/40 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm ${
-                      item.label === 'Login' ? 'w-48' : 'w-full'
+                      isDashboardOrLogin ? 'w-48' : 'w-full'
+                    } ${
+                      item.label === 'Admin Dashboard' ? 'bg-gradient-to-br from-purple-100/20 to-purple-200/20 border-purple-400/40' :
+                      item.label === 'User Dashboard' ? 'bg-gradient-to-br from-blue-100/20 to-blue-200/20 border-blue-400/40' : ''
                     }`}
                   >
-                    <IconComponent className="w-8 h-8 text-amber-300 mb-2" />
+                    <IconComponent className={`w-8 h-8 mb-2 ${
+                      item.label === 'Admin Dashboard' ? 'text-purple-300' :
+                      item.label === 'User Dashboard' ? 'text-blue-300' :
+                      'text-amber-300'
+                    }`} />
                     <span className="text-amber-100 text-sm font-medium text-center font-serif">{item.label}</span>
                   </Link>
                 </motion.div>
