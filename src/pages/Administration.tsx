@@ -16,7 +16,7 @@ const Administration: React.FC = () => {
       name: "Fr. Edwin Koyippuram",
       designation: "Vicar",
       icon: Crown,
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "C:\Users\Akhil\OneDrive\Pictures_fredwin.jpg"
     },
     {
       name: "James Palakkunnel",
