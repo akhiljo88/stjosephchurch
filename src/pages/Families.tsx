@@ -15,35 +15,35 @@ const Families: React.FC = () => {
       description: "Monthly gatherings where families come together for prayer, sharing, and fellowship.",
       icon: Heart,
       color: "from-red-600 to-red-700",
-      schedule: "First Friday of every month"
+      schedule: "Monthly"
     },
     {
       title: "Marriage Preparation",
       description: "Comprehensive program for couples preparing for the sacrament of marriage.",
       icon: Home,
       color: "from-pink-600 to-pink-700",
-      schedule: "Quarterly sessions"
+      schedule: "By Appointment"
     },
     {
-      title: "Parenting Workshops",
-      description: "Guidance and support for Christian parenting in today's world.",
+      title: "Parish Council Meetings",
+      description: "Meeting of Parish Council members to discuss and analyse Church activities and Accounts.",
       icon: Users,
       color: "from-blue-600 to-blue-700",
       schedule: "Bi-monthly"
     },
     {
-      title: "Baptism Classes",
-      description: "Preparation classes for parents planning to baptize their children.",
+      title: "Holy Communion Classes",
+      description: "Preparation classes for students preparing for their First Holy Communion.",
       icon: Baby,
       color: "from-green-600 to-green-700",
-      schedule: "Monthly"
+      schedule: "Yearly"
     },
     {
       title: "Sunday School",
       description: "Religious education for children of all ages to grow in faith.",
       icon: GraduationCap,
       color: "from-purple-600 to-purple-700",
-      schedule: "Every Sunday after 9 AM Mass"
+      schedule: "Every Sunday after 10:15 AM Mass"
     },
     {
       title: "Family Retreats",
@@ -55,10 +55,10 @@ const Families: React.FC = () => {
   ];
 
   const familyStats = [
-    { number: "120+", label: "Registered Families", icon: Home },
-    { number: "80+", label: "Children in Sunday School", icon: GraduationCap },
-    { number: "25+", label: "Marriages Blessed", icon: Heart },
-    { number: "40+", label: "Baptisms This Year", icon: Baby }
+    { number: "128", label: "Registered Families", icon: Home },
+    { number: "60+", label: "Children in Sunday School", icon: GraduationCap },
+    { number: "50+", label: "Marriages Blessed", icon: Heart },
+    { number: "5+", label: "Baptisms This Year", icon: Baby }
   ];
 
   return (
