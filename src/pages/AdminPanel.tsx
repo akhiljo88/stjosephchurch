@@ -14,19 +14,19 @@ const AdminPanel: React.FC = () => {
       name: "Fr. Edwin Koyippuram",
       designation: "Vicar",
       icon: Crown,
-      image: "public/images/fredwin.jpg"
+      image: "/images/fredwin.jpg"
     },
     {
       name: "James Palakkunnel",
       designation: "Coordinator",
       icon: Users,
-      image: "public/images/james.jpg"
+      image: "/images/james.jpg"
     },
     {
       name: "Akhil Jose Oottusalayil",
       designation: "Secretary",
       icon: FileText,
-      image: "public/images/3.jpg"
+      image: "/images/3.jpg"
     }
   ];
 
@@ -35,7 +35,7 @@ const AdminPanel: React.FC = () => {
       name: "Viju Orappankuzhymattathil",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "public/images/viju.jpg"
+      image: "/images/viju.jpg"
     },
     {
       name: "Baby Ezhuthupally",
@@ -53,19 +53,19 @@ const AdminPanel: React.FC = () => {
       name: "Mathew Nadakkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "public/images/mathew.jpg"
+      image: "/images/mathew.jpg"
     },
     {
       name: "Shine Makkanal",
       designation: "Chief Internal Auditor",
       icon: BookOpen,
-      image: "public/images/shine.jpg"
+      image: "/images/shine.jpg"
     },
     {
       name: "Sunny Nadakkal",
       designation: "Sunday School Headmaster",
       icon: GraduationCap,
-      image: "public/images/sunny.jpg"
+      image: "/images/sunny.jpg"
     }
   ];
 
