@@ -29,7 +29,7 @@ const Families: React.FC = () => {
       description: "Meeting of Parish Council members to discuss and analyse Church activities and Accounts.",
       icon: Users,
       color: "from-blue-600 to-blue-700",
-      schedule: "Bi-monthly"
+      schedule: "Monthly"
     },
     {
       title: "Holy Communion Classes",
