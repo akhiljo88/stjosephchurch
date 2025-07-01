@@ -14,19 +14,19 @@ const AdminPanel: React.FC = () => {
       name: "Fr. Edwin Koyippuram",
       designation: "Vicar",
       icon: Crown,
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/fredwin.jpg"
     },
     {
       name: "James Palakkunnel",
       designation: "Coordinator",
       icon: Users,
-      image: "https://images.pexels.com/photos/1462980/pexels-photo-1462980.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/james.jpg"
     },
     {
       name: "Akhil Jose Oottusalayil",
       designation: "Secretary",
       icon: FileText,
-      image: "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/3.jpg"
     }
   ];
 
@@ -35,7 +35,7 @@ const AdminPanel: React.FC = () => {
       name: "Viju Orappankuzhymattathil",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "https://images.pexels.com/photos/1687675/pexels-photo-1687675.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/viju.jpg"
     },
     {
       name: "Baby Ezhuthupally",
@@ -47,25 +47,25 @@ const AdminPanel: React.FC = () => {
       name: "Shaju Nellikkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/shaju.jpg"
     },
     {
       name: "Mathew Nadakkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/mathew.jpg"
     },
     {
       name: "Shine Makkanal",
       designation: "Chief Internal Auditor",
       icon: BookOpen,
-      image: "https://images.pexels.com/photos/1300402/pexels-photo-1300402.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/shine.jpg"
     },
     {
       name: "Sunny Nadakkal",
       designation: "Sunday School Headmaster",
       icon: GraduationCap,
-      image: "https://images.pexels.com/photos/1408221/pexels-photo-1408221.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "public/images/sunny.jpg"
     }
   ];
 

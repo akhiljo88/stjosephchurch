@@ -14,7 +14,7 @@ const SocialMedia: React.FC = () => {
       icon: MessageCircle,
       label: 'WhatsApp',
       color: 'from-green-500 to-green-600',
-      action: () => window.open('https://wa.me/9400062714?text=Hello%20St.%20Joseph%27s%20Church%20Arabi', '_blank')
+      action: () => window.open('https://wa.me/+919400062714?text=Hello%20St.%20Joseph%27s%20Church%20Arabi', '_blank')
     },
     {
       icon: Mail,
