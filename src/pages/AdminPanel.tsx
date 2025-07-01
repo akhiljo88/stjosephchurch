@@ -47,7 +47,7 @@ const AdminPanel: React.FC = () => {
       name: "Shaju Nellikkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "public/images/shaju.jpg"
+      image: "/images/shaju.jpg"
     },
     {
       name: "Mathew Nadakkal",
