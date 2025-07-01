@@ -41,7 +41,7 @@ const AdminPanel: React.FC = () => {
       name: "Baby Ezhuthupally",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "https://images.pexels.com/photos/1484794/pexels-photo-1484794.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2"
+      image: "/images/babye.jpg"
     },
     {
       name: "Shaju Nellikkal",
