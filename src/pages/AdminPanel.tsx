@@ -41,31 +41,31 @@ const AdminPanel: React.FC = () => {
       name: "Baby Ezhuthupally",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "/images/babye.jpg"
+      image: "/images/babye copy.jpg"
     },
     {
       name: "Shaju Nellikkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "/images/shaju.jpg"
+      image: "/images/shajuc.jpg"
     },
     {
       name: "Mathew Nadakkal",
       designation: "Kaikkaran",
       icon: Settings,
-      image: "/images/mathew.jpg"
+      image: "/images/mathewc.jpg"
     },
     {
       name: "Shine Makkanal",
       designation: "Chief Internal Auditor",
       icon: BookOpen,
-      image: "/images/shine.jpg"
+      image: "/images/shinec.jpg"
     },
     {
       name: "Sunny Nadakkal",
       designation: "Sunday School Headmaster",
       icon: GraduationCap,
-      image: "/images/sunny.jpg"
+      image: "/images/sunnyn.jpg"
     }
   ];
 
