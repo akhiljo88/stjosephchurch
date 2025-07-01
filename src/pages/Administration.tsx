@@ -16,19 +16,19 @@ const Administration: React.FC = () => {
       name: "Fr. Edwin Koyippuram",
       designation: "Vicar",
       icon: Crown,
-      image: "public/images/fredwin.jpg"
+      image: "/images/fredwin.jpg"
     },
     {
       name: "James Palakkunnel",
       designation: "Coordinator",
       icon: Users,
-      image: "public/images/james.jpg"
+      image: "/images/james.jpg"
     },
     {
       name: "Akhil Jose Oottusalayil",
       designation: "Secretary",
       icon: FileText,
-      image: "public/images/3.jpg"
+      image: "/images/3.jpg"
     }
   ];
 
