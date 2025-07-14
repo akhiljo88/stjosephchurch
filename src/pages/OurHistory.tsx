@@ -100,6 +100,21 @@ const OurHistory: React.FC = () => {
           </div>
 
           <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 2.5, duration: 0.6 }}
+            className="text-center mt-12"
+          >
+            <button
+              onClick={() => navigate('/arabi-history')}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 font-serif text-lg"
+            >
+              <Calendar className="w-6 h-6 mr-3" />
+              History of Arabi
+            </button>
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2, duration: 0.8 }}

@@ -19,6 +19,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
 import AddUser from './pages/AddUser';
 import UpdateUser from './pages/UpdateUser';
+import ArabiHistory from './pages/ArabiHistory';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/add-user" element={<AddUser />} />
           <Route path="/update-user/:id" element={<UpdateUser />} />
+          <Route path="/arabi-history" element={<ArabiHistory />} />
         </Routes>
       </div>
     </Router>
