@@ -113,14 +113,14 @@ const ArabiHistory: React.FC = () => {
                 >
                   <div className="relative h-64 overflow-hidden">
                     <img 
-                      src="/church.jpg"
-                      alt="St. Joseph's Church Arabi"
+                      src="public/images/arwaterfallsc.jpg"
+                      alt="Arabi Waterfalls"
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-white font-bold text-lg font-serif">St. Joseph's Church</h3>
-                      <p className="text-amber-200 text-sm font-serif">The heart of our community</p>
+                      <h3 className="text-white font-bold text-lg font-serif">Arabi Waterfalls</h3>
+                      <p className="text-amber-200 text-sm font-serif">Beauty of our village</p>
                     </div>
                   </div>
                 </motion.div>
