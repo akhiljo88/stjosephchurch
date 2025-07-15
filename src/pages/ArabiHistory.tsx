@@ -283,7 +283,7 @@ const ArabiHistory: React.FC = () => {
       >
         <div className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden rounded-3xl mx-6 shadow-2xl">
           <img 
-            src="/church.jpg"
+            src="/images/arabi.webp"
             alt="St. Joseph's Church Arabi - A Testament to Faith"
             className="w-full h-full object-cover"
           />
