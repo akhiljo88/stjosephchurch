@@ -298,11 +298,10 @@ const ArabiHistory: React.FC = () => {
               className="text-center"
             >
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-serif">
-                St. Joseph's Church, Arabi
+                
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl text-amber-200 font-serif max-w-4xl mx-auto leading-relaxed">
-                A beacon of faith standing proudly in the heart of Arabi, 
-                where generations have found solace, celebrated joy, and strengthened their bond with God.
+                
               </p>
               <div className="mt-6 flex justify-center">
                 <div className="w-24 h-1 bg-amber-400 rounded-full"></div>
