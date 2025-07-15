@@ -252,22 +252,15 @@ const ArabiHistory: React.FC = () => {
             
             <div className="prose prose-lg prose-amber max-w-none">
               <p className="text-gray-800 leading-relaxed mb-6 text-lg font-serif text-center">
-                Today, Arabi stands as a testament to the harmonious blend of tradition and progress. 
-                Our community continues to honor its rich heritage while embracing modern development. 
-                The town is known for its warm hospitality, strong family values, and deep-rooted faith.
+                Arabi is an ancient village in the eastern hilly region, part of the Iritty Taluk, located 40 km east of the district headquarters Kannur, and is the seventh ward of the Ulikkal Panchayat. The area is crossed by the Kerala State Hill Highway SH-59 and shares its eastern border with the Kodagu district of Karnataka. Surrounded by the major cities of Peravoor and Koothuparamba to the south and Taliparamba to the west, Arabi is located five kilometres east of the 800-year-old Sreevayathur Kaliyar Shiva Temple.
               </p>
               
               <p className="text-gray-700 leading-relaxed mb-6 text-lg font-serif text-center">
-                St. Joseph's Church remains at the heart of our community, serving not just as a place of worship, 
-                but as a center for social gatherings, cultural events, and community support. The church has 
-                witnessed countless celebrations, provided comfort in times of sorrow, and continues to be a 
-                beacon of hope and faith for all residents of Arabi.
+               This village, just like its name, has a lot of diversity. A hilly village that grew up as part of the Malabar migration. Situated in the foothills of the eastern and western mountain ranges, this land is rich in geography and climate. The Valapattanam River, adjacent to the Brahmagiri Hills, and the natural beauty of Arabi attract tourists here. An agricultural community, this place is rich in cash crops such as rubber, cashew, coconut, and adakka. 
               </p>
 
               <p className="text-gray-700 leading-relaxed text-lg font-serif text-center">
-                As we look toward the future, Arabi remains committed to preserving its cultural identity 
-                while welcoming progress and development. Our community continues to grow stronger, 
-                united by shared values, mutual respect, and an unwavering faith in God's providence.
+                The first school in Arabi was established in 1970 as a result of the collective efforts of a people. Half a century later, this school still plays a major role in the socio-cultural growth of Arabi. As we walk the historical path of today's Arabi, who are advancing on the path of development, we are amazed by the history of a people who conquered mountains and hills through hard work and unity.
               </p>
             </div>
           </motion.div>
