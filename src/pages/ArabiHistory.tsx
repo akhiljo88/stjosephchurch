@@ -273,6 +273,49 @@ const ArabiHistory: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Big Image Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 3, duration: 1 }}
+        className="mt-16"
+      >
+        <div className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden rounded-3xl mx-6 shadow-2xl">
+          <img 
+            src="/church.jpg"
+            alt="St. Joseph's Church Arabi - A Testament to Faith"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          
+          {/* Overlay Content */}
+          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 3.5, duration: 0.8 }}
+              className="text-center"
+            >
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-serif">
+                St. Joseph's Church, Arabi
+              </h2>
+              <p className="text-lg md:text-xl lg:text-2xl text-amber-200 font-serif max-w-4xl mx-auto leading-relaxed">
+                A beacon of faith standing proudly in the heart of Arabi, 
+                where generations have found solace, celebrated joy, and strengthened their bond with God.
+              </p>
+              <div className="mt-6 flex justify-center">
+                <div className="w-24 h-1 bg-amber-400 rounded-full"></div>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-8 left-8 w-16 h-16 border-4 border-amber-400 rounded-full opacity-30"></div>
+          <div className="absolute top-12 right-12 w-8 h-8 border-2 border-white rounded-full opacity-40"></div>
+          <div className="absolute bottom-20 left-12 w-12 h-12 border-3 border-amber-300 rounded-full opacity-25"></div>
+        </div>
+      </motion.div>
       <Copyright />
     </div>
   );
