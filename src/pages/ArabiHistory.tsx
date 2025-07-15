@@ -139,7 +139,7 @@ const ArabiHistory: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-white font-bold text-lg font-serif">Enlightening Generations</h3>
+                      <h3 className="text-white font-bold text-lg font-serif">St.Josephs UP School </h3>
                       <p className="text-amber-200 text-sm font-serif">Guiding the generations with knowledge and leadership</p>
                     </div>
                   </div>
