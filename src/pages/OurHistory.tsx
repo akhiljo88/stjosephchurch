@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Calendar, Church, Users, Heart, Star } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -7,6 +8,7 @@ import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
 
 const OurHistory: React.FC = () => {
+  const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const timelineEvents = [
@@ -103,7 +105,7 @@ const OurHistory: React.FC = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 2.5, duration: 0.6 }}
-            className="text-center mt-12"
+            className="text-center mt-16"
           >
             <button
               onClick={() => navigate('/arabi-history')}
