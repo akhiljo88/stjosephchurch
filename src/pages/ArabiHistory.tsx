@@ -113,13 +113,13 @@ const ArabiHistory: React.FC = () => {
                 >
                   <div className="relative h-64 overflow-hidden">
                     <img 
-                      src="public/images/arwaterfallsc.jpg"
+                      src="/images/arabi.webp"
                       alt="Arabi Waterfalls"
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-white font-bold text-lg font-serif">Arabi Waterfalls</h3>
+                      <h3 className="text-white font-bold text-lg font-serif">Arabi</h3>
                       <p className="text-amber-200 text-sm font-serif">Beauty of our village</p>
                     </div>
                   </div>
@@ -276,8 +276,8 @@ const ArabiHistory: React.FC = () => {
       >
         <div className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden rounded-3xl mx-6 shadow-2xl">
           <img 
-            src="/images/arabi.webp"
-            alt="St. Joseph's Church Arabi - A Testament to Faith"
+            src="/images/arwaterfallsc.jpg"
+            alt="Arabi Waterfalls - A Mark of Beauty"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
@@ -291,7 +291,7 @@ const ArabiHistory: React.FC = () => {
               className="text-center"
             >
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-serif">
-                
+                ARABI WATERFALLS
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl text-amber-200 font-serif max-w-4xl mx-auto leading-relaxed">
                 
