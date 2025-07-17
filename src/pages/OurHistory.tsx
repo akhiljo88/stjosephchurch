@@ -13,33 +13,33 @@ const OurHistory: React.FC = () => {
 
   const timelineEvents = [
     {
-      year: 1892,
-      title: "Foundation Stone Laid",
-      description: "The foundation stone of St. Joseph's Church was laid by Bishop Thomas, marking the beginning of our spiritual journey.",
+      year: 1970,
+      title: "Foundation",
+      description: "St.Joseph Church was established as a small gathering of faithful families committed to serving Christ in our community.",
       icon: Church
     },
     {
-      year: 1895,
-      title: "First Holy Mass",
-      description: "Father Michael celebrated the first Holy Mass in the newly constructed church, blessing the community.",
+      year: 1991,
+      title: "Church Construction",
+      description: "Our current sanctuary was built and dedicated,providing a permanent home for our growing congregation.",
       icon: Star
     },
     {
-      year: 1912,
-      title: "Bell Tower Completed",
-      description: "The iconic bell tower was completed, becoming a landmark that called faithful to prayer for miles around.",
+      year: 1975,
+      title: "Parish School Established",
+      description: "St. Joseph's Parish School was established to provide Christian education to the children of the community.",
       icon: Church
     },
     {
-      year: 1956,
-      title: "Parish School Established",
-      description: "St. Joseph's Parish School was established to provide Christian education to the children of the community.",
+      year: 2000,
+      title: "Community Center",
+      description: "We expanded our facilities to include a community center, allowing us to better serve our members and the braoder community.",
       icon: Users
     },
     {
-      year: 1985,
-      title: "Church Renovation",
-      description: "Major renovation and modernization of the church facilities while preserving its historical charm and character.",
+      year: 2025,
+      title: "Digital Ministry",
+      description: "Embracing modern technology, we launched our online services and digital ministry to reach more people with the message of Christ.",
       icon: Heart
     }
   ];
