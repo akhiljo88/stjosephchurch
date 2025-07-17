@@ -279,6 +279,7 @@ const ArabiHistory: React.FC = () => {
               <div class="author"
               <h2 className="text-3xl font-bold text-center text-red-900 mb-8 font-serif">by  Amal Jolly</h2>
             </div>
+            </div>
           </motion.div>
         </div>
       </div>
