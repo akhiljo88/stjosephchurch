@@ -275,8 +275,8 @@ const ArabiHistory: React.FC = () => {
               <p className="text-gray-700 leading-relaxed text-lg font-serif text-center">
                 The first school in Arabi was established in 1970 as a result of the collective efforts of a people. Half a century later, this school still plays a major role in the socio-cultural growth of Arabi. As we walk the historical path of today's Arabi, who are advancing on the path of development, we are amazed by the history of a people who conquered mountains and hills through hard work and unity.
               </p>
-              <br>
-                <h4 className="text-3xl font-bold text-center text-red-900 mb-8 font-serif">Amal Jolly</h4></br>
+              
+                <h4 className="text-3xl font-bold text-center text-red-900 mb-8 font-serif">Amal Jolly</h4>
             </div>
           </motion.div>
         </div>
