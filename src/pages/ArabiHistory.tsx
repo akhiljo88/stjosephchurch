@@ -29,15 +29,15 @@ const ArabiHistory: React.FC = () => {
       icon: Users
     },
     {
-      year: "1892",
-      title: "St. Joseph's Church Founded",
-      description: "The establishment of St. Joseph's Church marked a significant milestone in the spiritual and community life of Arabi.",
-      icon: Church
-    },
-    {
       year: "Post-Independence",
       title: "Modern Development",
       description: "After India's independence, Arabi has grown into a vibrant community while preserving its rich heritage and traditions.",
+      icon: Church
+    },
+    {
+      year: "1970",
+      title: "St.Joseph UP School Established",
+      description: "After the invasion of Migrant Christians with the support of Diocese, Local administration and the people the temple of knowledge was established.",
       icon: HomeIcon
     }
   ];
