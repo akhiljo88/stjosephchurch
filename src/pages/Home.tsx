@@ -100,6 +100,18 @@ const Home: React.FC = () => {
           Arabi
         </motion.p>
 
+        {/* Bible Quote Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.8 }}
+          className="bg-black/40 backdrop-blur-sm rounded-2xl p-6 mb-8 max-w-2xl mx-auto border border-amber-300/30"
+        >
+          <blockquote className="text-amber-100 text-lg md:text-xl font-serif italic text-center mb-3">
+            "Be it done unto me according to thy word."
+          </blockquote>
+          <p className="text-amber-300 text-sm font-serif text-center">- Luke 1:38</p>
+        </motion.div>
         <SocialMedia />
 
         <motion.div

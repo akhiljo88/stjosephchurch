@@ -84,6 +84,19 @@ const Families: React.FC = () => {
               St. Joseph's Church is a place where families are nurtured, supported, and celebrated. 
               We offer programs and services designed to strengthen family bonds and deepen faith together.
             </p>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "Train up a child in the way he should go; even when he is old he will not depart from it."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Proverbs 22:6</p>
+            </motion.div>
           </motion.div>
 
           <motion.div

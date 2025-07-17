@@ -89,6 +89,19 @@ const Events: React.FC = () => {
             <p className="text-gray-700 text-xl mt-8 font-serif max-w-3xl mx-auto">
               Join us for worship, celebration, and community gathering. Mark your calendars for these special occasions.
             </p>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "Let us not give up meeting together, as some are in the habit of doing."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Hebrews 10:25</p>
+            </motion.div>
           </motion.div>
 
           <motion.div

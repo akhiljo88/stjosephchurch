@@ -108,6 +108,19 @@ const Contact: React.FC = () => {
               We're here to serve you and our community. Reach out to us for any questions, 
               prayer requests, or to learn more about our church family.
             </p>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Matthew 7:7</p>
+            </motion.div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">

@@ -76,6 +76,19 @@ const HolyCommunities: React.FC = () => {
             <p className="text-gray-700 text-xl mt-8 font-serif max-w-3xl mx-auto">
               Our vibrant communities bring together people of all ages to grow in faith, serve others, and build lasting friendships in Christ.
             </p>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "As iron sharpens iron, so one person sharpens another."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Proverbs 27:17</p>
+            </motion.div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

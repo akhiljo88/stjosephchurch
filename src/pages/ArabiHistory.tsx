@@ -88,6 +88,19 @@ const ArabiHistory: React.FC = () => {
               Discover the rich history and cultural heritage of Arabi, a place where tradition meets modernity, 
               and where our community has thrived for generations.
             </p>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "The Lord your God will bless you in the land he is giving you."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Deuteronomy 15:4</p>
+            </motion.div>
           </motion.div>
 
           <motion.div

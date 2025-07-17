@@ -85,6 +85,18 @@ const About: React.FC = () => {
                 </p>
               </motion.div>
 
+              {/* Bible Quote Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.8 }}
+                className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mb-8 border-2 border-amber-200"
+              >
+                <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                  "For where two or three gather in my name, there am I with them."
+                </blockquote>
+                <p className="text-amber-600 text-sm font-serif text-center">- Matthew 18:20</p>
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}

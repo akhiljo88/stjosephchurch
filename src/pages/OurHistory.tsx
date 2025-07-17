@@ -63,6 +63,19 @@ const OurHistory: React.FC = () => {
           >
             <h1 className="text-5xl md:text-6xl font-bold text-red-900 mb-6 font-serif">Our History</h1>
             <div className="w-24 h-1 bg-amber-400 mx-auto"></div>
+            
+            {/* Bible Quote Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-6 mt-8 mb-8 max-w-3xl mx-auto border-2 border-amber-200"
+            >
+              <blockquote className="text-red-900 text-lg font-serif italic text-center mb-3">
+                "Remember the days of old; consider the generations long past."
+              </blockquote>
+              <p className="text-amber-600 text-sm font-serif text-center">- Deuteronomy 32:7</p>
+            </motion.div>
           </motion.div>
 
           <div className="relative mb-16">
