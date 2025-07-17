@@ -50,12 +50,12 @@ const ArabiHistory: React.FC = () => {
     },
     {
       title: "Local Cuisine",
-      description: "The region is known for its distinctive Kerala cuisine, featuring coconut-based curries, seafood, and traditional spices.",
+      description: "The region is known for its distinctive Kerala cuisine, featuring coconut-based curries, riverfish, and traditional spices.",
       icon: HomeIcon
     },
     {
-      title: "Arts & Crafts",
-      description: "Traditional handicrafts and art forms have been passed down through generations, keeping the cultural heritage alive.",
+      title: "Waterfall & Hills",
+      description: "A vibrant waterfall which drews the natural beauty of Arabi attracts tourists from different parts of the district.Moreover Arabi is known for its Hill topography and Greenary.",
       icon: Users
     },
     {
