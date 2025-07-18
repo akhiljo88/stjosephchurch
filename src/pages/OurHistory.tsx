@@ -19,15 +19,15 @@ const OurHistory: React.FC = () => {
       icon: Church
     },
     {
-      year: 1991,
-      title: "Church Construction",
-      description: "Our current sanctuary was built and dedicated,providing a permanent home for our growing congregation.",
+      year: 1980,
+      title: "Parish School Established",
+      description: "St. Joseph's Parish School was established to provide Christian education to the children of the community.",
       icon: Star
     },
     {
-      year: 1975,
-      title: "Parish School Established",
-      description: "St. Joseph's Parish School was established to provide Christian education to the children of the community.",
+      year: 1991,
+      title: "Church Construction",
+      description: "Our current sanctuary was built and dedicated,providing a permanent home for our growing congregation.",
       icon: Church
     },
     {
