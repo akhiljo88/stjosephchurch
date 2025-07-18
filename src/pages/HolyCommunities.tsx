@@ -29,7 +29,7 @@ const HolyCommunities: React.FC = () => {
       description: "Indigenous pious organization for Catholic children.",
       icon: Star,
       color: "from-green-600 to-green-700",
-      activities: ["Men's Retreat", "Community Projects", "Spiritual Growth"]
+      activities: ["Community Services", "Missionary Trips", "Spiritual Growth"]
     },
     {
       name: "Bible Study Group",
