@@ -127,6 +127,9 @@ const Home: React.FC = () => {
           />
         </motion.div>
       </div>
+      
+      {/* Spacer to ensure Copyright is visible */}
+      <div className="h-16"></div>
       <Copyright />
     </div>
   );
