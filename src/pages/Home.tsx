@@ -128,9 +128,17 @@ const Home: React.FC = () => {
         </motion.div>
       </div>
       
-      {/* Spacer to ensure Copyright is visible */}
-      <div className="h-16"></div>
-      <Copyright />
+      {/* Copyright section with proper positioning */}
+      <div className="relative z-20 bg-gradient-to-r from-red-900 to-red-800 py-6 mt-16">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-amber-200 font-serif">
+            © {new Date().getFullYear()} St. Joseph's Church, Arabi. All rights reserved.
+          </p>
+          <p className="text-amber-300 text-sm mt-2 font-serif">
+            Built with faith and love for our community
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
