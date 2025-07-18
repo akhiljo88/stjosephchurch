@@ -29,7 +29,7 @@ const ArabiHistory: React.FC = () => {
       icon: Users
     },
     {
-      year: "Post-Independence",
+      year: "Goden 60's",
       title: "Modern Development",
       description: "After India's independence, Arabi has grown into a vibrant community while preserving its rich heritage and traditions.",
       icon: Church
