@@ -21,6 +21,7 @@ import AddUser from './pages/AddUser';
 import UpdateUser from './pages/UpdateUser';
 import ArabiHistory from './pages/ArabiHistory';
 import Gallery from './pages/Gallery';
+import Directory from './pages/Directory';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/update-user/:id" element={<UpdateUser />} />
           <Route path="/arabi-history" element={<ArabiHistory />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/directory" element={<Directory />} />
         </Routes>
       </div>
     </Router>

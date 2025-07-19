@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck, Shield, User, Camera } from 'lucide-react';
+import { X, Home, Users, Settings, Church, Heart, Calendar, Phone, UserCheck, Shield, User, Camera, BookOpen } from 'lucide-react';
 import { isAuthenticated, isAdmin } from '../lib/auth';
 
 interface NavigationProps {
@@ -21,6 +21,7 @@ const Navigation: React.FC<NavigationProps> = ({ onClose }) => {
     { path: '/families', label: 'Our Families', icon: Heart },
     { path: '/events', label: 'Events & Timings', icon: Calendar },
     { path: '/gallery', label: 'Gallery', icon: Camera },
+    { path: '/directory', label: 'Directory', icon: BookOpen },
     { path: '/contact', label: 'Connect With Us', icon: Phone }
   ];
 
