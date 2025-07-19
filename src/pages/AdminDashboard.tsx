@@ -16,6 +16,8 @@ const AdminDashboard: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
   useEffect(() => {
     // Check if user is admin, redirect to login if not authenticated or not admin
@@ -27,11 +29,24 @@ const AdminDashboard: React.FC = () => {
     loadUsers();
   }, [navigate]);
 
+  useEffect(() => {
+    // Filter users based on search term
+    if (searchTerm.trim() === '') {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter(user =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    }
+  }, [users, searchTerm]);
+
   const loadUsers = async () => {
     setLoading(true);
     try {
       const usersData = await getUsers();
       setUsers(usersData.filter(user => !user.is_admin)); // Don't show admin users in the table
+      setFilteredUsers(usersData.filter(user => !user.is_admin));
     } catch (error) {
       console.error('Error loading users:', error);
     } finally {
@@ -48,6 +63,10 @@ const AdminDashboard: React.FC = () => {
         alert('Failed to delete user. Please try again.');
       }
     }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const handleLogout = () => {
@@ -197,6 +216,39 @@ const AdminDashboard: React.FC = () => {
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
+            
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative max-w-md">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Users className="h-5 w-5 text-amber-600" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search users by name..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-amber-200 focus:border-red-500 focus:outline-none transition-colors duration-300 font-serif bg-white"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm('')}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    <Plus className="h-5 w-5 text-amber-600 rotate-45 hover:text-red-600 transition-colors duration-200" />
+                  </button>
+                )}
+              </div>
+              {searchTerm && (
+                <p className="mt-2 text-sm text-amber-600 font-serif">
+                  {filteredUsers.length === 0 
+                    ? `No users found matching "${searchTerm}"` 
+                    : `Found ${filteredUsers.length} user${filteredUsers.length === 1 ? '' : 's'} matching "${searchTerm}"`
+                  }
+                </p>
+              )}
+            </div>
+
             <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200 overflow-x-auto">
               {loading ? (
                 <div className="text-center py-8">
@@ -216,7 +268,7 @@ const AdminDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                       <tr key={user.id} className="border-b border-amber-200 hover:bg-amber-100">
                         <td className="p-3 font-serif text-red-900">{user.name}</td>
                         <td className="p-3 font-serif text-red-900">₹{user.monthly_collection}</td>
@@ -242,10 +294,17 @@ const AdminDashboard: React.FC = () => {
                         </td>
                       </tr>
                     ))}
-                    {users.length === 0 && !loading && (
+                    {filteredUsers.length === 0 && !loading && searchTerm === '' && (
                       <tr>
                         <td colSpan={7} className="p-8 text-center text-gray-500 font-serif">
                           No users found. Add your first user to get started.
+                        </td>
+                      </tr>
+                    )}
+                    {filteredUsers.length === 0 && !loading && searchTerm !== '' && (
+                      <tr>
+                        <td colSpan={7} className="p-8 text-center text-gray-500 font-serif">
+                          No users found matching "{searchTerm}". Try a different search term.
                         </td>
                       </tr>
                     )}
