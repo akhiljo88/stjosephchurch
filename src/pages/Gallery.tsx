@@ -99,7 +99,7 @@ const Gallery: React.FC = () => {
     {
       id: 13,
       type: 'video',
-      src: 'https://www.instagram.com/kcym_arabi_unit/reel/DIjXHRmTxmq/',
+      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/?igsh=aDRwaDduejdqZzA4',
       thumbnail: '/church.jpg',
       title: 'Christmas Celebration 2024',
       category: 'Events'
@@ -115,7 +115,7 @@ const Gallery: React.FC = () => {
     {
       id: 15,
       type: 'video',
-      src: 'https://www.instagram.com/kcym_arabi_unit/reel/DIlpQk4TXEk/',
+      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/?igsh=MXdkN3UwMHp0cWtyZQ==',
       thumbnail: '/images/arabischool.webp',
       title: 'Youth Ministry Activities',
       category: 'Youth'
