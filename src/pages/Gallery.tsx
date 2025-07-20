@@ -22,14 +22,14 @@ const Gallery: React.FC = () => {
     {
       id: 2,
       type: 'photo',
-      src: '/images/IMG_20221218_123746.jpg',
+      src: '/images/IMG_20230402_073518 copy.jpg',
       title: 'James Palakkunnel - Parish Coordinator',
       category: 'Leadership'
     },
     {
       id: 3,
       type: 'photo',
-      src: '/images/IMG_20230402_073518 copy.jpg',
+      src: '/images/IMG-20250629-WA0074.jpg',
       title: 'Akhil Jose - Parish Secretary',
       category: 'Leadership'
     },
@@ -50,7 +50,7 @@ const Gallery: React.FC = () => {
     {
       id: 6,
       type: 'photo',
-      src: '/images/IMG-20230212-WA0005 copy.jpg',
+      src: '/images/IMG-20240122-WA0141.jpg',
       title: 'Arabi Waterfalls - Natural Beauty',
       category: 'Nature'
     },
@@ -64,7 +64,7 @@ const Gallery: React.FC = () => {
     {
       id: 8,
       type: 'photo',
-      src: '/images/IMG-20230212-WA0011 copy.jpg',
+      src: 'public/images/IMG-20240120-WA0085.jpg',
       title: 'Baby Ezhuthupally - Kaikkaran',
       category: 'Management'
     },
