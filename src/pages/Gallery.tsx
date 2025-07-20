@@ -107,7 +107,7 @@ const Gallery: React.FC = () => {
     {
       id: 14,
       type: 'video',
-      src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      src: 'https://www.instagram.com/kcym_arabi_unit/reel/Cwjy3ENSk9o/',
       thumbnail: '/images/arabi.webp',
       title: 'Sunday Mass Highlights',
       category: 'Worship'
