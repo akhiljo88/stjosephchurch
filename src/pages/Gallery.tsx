@@ -36,7 +36,7 @@ const Gallery: React.FC = () => {
     {
       id: 4,
       type: 'photo',
-      src: '/images/IMG_20230402_073518.jpg',
+      src: '/images/IMG-20230806-WA0042.jpg',
       title: 'Beautiful Arabi Village',
       category: 'Community'
     },
