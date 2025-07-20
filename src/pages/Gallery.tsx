@@ -64,7 +64,7 @@ const Gallery: React.FC = () => {
     {
       id: 8,
       type: 'photo',
-      src: 'public/images/IMG-20240120-WA0085.jpg',
+      src: '/IMG-20240120-WA0085.jpg',
       title: 'Baby Ezhuthupally - Kaikkaran',
       category: 'Management'
     },
