@@ -15,84 +15,84 @@ const Gallery: React.FC = () => {
     {
       id: 1,
       type: 'photo',
-      src: '/images/fredwin.jpg',
+      src: '/images/IMG_20221218_123746 - Copy.jpg',
       title: 'Fr. Edwin Koyippuram - Our Beloved Vicar',
       category: 'Leadership'
     },
     {
       id: 2,
       type: 'photo',
-      src: '/images/james.jpg',
+      src: '/images/IMG_20221218_123746.jpg',
       title: 'James Palakkunnel - Parish Coordinator',
       category: 'Leadership'
     },
     {
       id: 3,
       type: 'photo',
-      src: '/images/3.jpg',
+      src: '/images/IMG_20230402_073518 copy.jpg',
       title: 'Akhil Jose - Parish Secretary',
       category: 'Leadership'
     },
     {
       id: 4,
       type: 'photo',
-      src: '/images/arabi.webp',
+      src: '/images/IMG_20230402_073518.jpg',
       title: 'Beautiful Arabi Village',
       category: 'Community'
     },
     {
       id: 5,
       type: 'photo',
-      src: '/images/arabischool.webp',
+      src: '/images/IMG_6059 - Copy.jpeg',
       title: 'St. Joseph\'s UP School',
       category: 'Education'
     },
     {
       id: 6,
       type: 'photo',
-      src: '/images/arwaterfallsc.jpg',
+      src: '/images/IMG-20230212-WA0005 copy.jpg',
       title: 'Arabi Waterfalls - Natural Beauty',
       category: 'Nature'
     },
     {
       id: 7,
       type: 'photo',
-      src: '/images/viju.jpg',
+      src: '/images/IMG-20230212-WA0005.jpg',
       title: 'Viju Orappankuzhymattathil - Kaikkaran',
       category: 'Management'
     },
     {
       id: 8,
       type: 'photo',
-      src: '/images/babye copy.jpg',
+      src: '/images/IMG-20230212-WA0011 copy.jpg',
       title: 'Baby Ezhuthupally - Kaikkaran',
       category: 'Management'
     },
     {
       id: 9,
       type: 'photo',
-      src: '/images/shajuc.jpg',
+      src: '/images/IMG-20230212-WA0056.jpg',
       title: 'Shaju Nellikkal - Kaikkaran',
       category: 'Management'
     },
     {
       id: 10,
       type: 'photo',
-      src: '/images/mathewc.jpg',
+      src: '/images/IMG-20230212-WA0011.jpg',
       title: 'Mathew Nadakkal - Kaikkaran',
       category: 'Management'
     },
     {
       id: 11,
       type: 'photo',
-      src: '/images/shinec.jpg',
+      src: '/images/IMG-20230514-WA0024.jpg',
       title: 'Shine Makkanal - Chief Internal Auditor',
       category: 'Management'
     },
     {
       id: 12,
       type: 'photo',
-      src: '/images/sunnyn.jpg',
+      src: '/images/IMG-20230618-WA0012.jpg',
       title: 'Sunny Nadakkal - Sunday School Headmaster',
       category: 'Education'
     },
