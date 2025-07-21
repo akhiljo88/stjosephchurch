@@ -107,7 +107,7 @@ const Gallery: React.FC = () => {
     {
       id: 14,
       type: 'video',
-      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/?igsh=MWx0c3N2YWp3Zmkxbw==',
+      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/?utm_source=ig_embed&amp;utm_campaign=loading',
       thumbnail: '/images/arabi.webp',
       title: 'Sunday Mass Highlights',
       category: 'Worship'
@@ -115,7 +115,7 @@ const Gallery: React.FC = () => {
     {
       id: 15,
       type: 'video',
-      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/?igsh=MXdkN3UwMHp0cWtyZQ==',
+      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/?utm_source=ig_embed&amp;utm_campaign=loading',
       thumbnail: '/images/arabischool.webp',
       title: 'Youth Ministry Activities',
       category: 'Youth'
