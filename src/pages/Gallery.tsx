@@ -127,6 +127,38 @@ const Gallery: React.FC = () => {
       thumbnail: '/images/arwaterfallsc.jpg',
       title: 'Parish Retreat 2024',
       category: 'Events'
+    },
+    {
+      id: 17,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/YOUR_REEL_ID_1/embed/',
+      thumbnail: '/images/IMG-20230212-WA0005.jpg',
+      title: 'Church Community Moments',
+      category: 'Reels'
+    },
+    {
+      id: 18,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/YOUR_REEL_ID_2/embed/',
+      thumbnail: '/images/IMG-20230514-WA0024.jpg',
+      title: 'Sunday Mass Highlights',
+      category: 'Reels'
+    },
+    {
+      id: 19,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/YOUR_REEL_ID_3/embed/',
+      thumbnail: '/images/IMG_20221218_123746 - Copy.jpg',
+      title: 'Youth Fellowship Activities',
+      category: 'Reels'
+    },
+    {
+      id: 20,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/YOUR_REEL_ID_4/embed/',
+      thumbnail: '/images/IMG-20230618-WA0012.jpg',
+      title: 'Church Festival Celebrations',
+      category: 'Reels'
     }
   ];
 
