@@ -99,7 +99,7 @@ const Gallery: React.FC = () => {
     {
       id: 13,
       type: 'video',
-      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/?igsh=MWx0c3N2YWp3Zmkxbw==',
+      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/?utm_source=ig_embed&amp;utm_campaign=loading',
       thumbnail: '/church.jpg',
       title: 'Christmas Celebration 2024',
       category: 'Events'
