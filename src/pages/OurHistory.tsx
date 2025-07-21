@@ -145,7 +145,7 @@ const OurHistory: React.FC = () => {
             
             <div className="prose prose-lg prose-amber max-w-none">
               <p className="text-gray-800 leading-relaxed mb-6 text-lg font-serif text-center">
-                For over a century, St. Joseph's Church has stood as a testament to the enduring power of faith and community. 
+                For over five decades, St. Joseph's Church has stood as a testament to the enduring power of faith and community. 
                 Our rich history is woven with countless stories of devotion, service, and spiritual growth. From humble beginnings 
                 in the late 19th century, our church has grown to become a cornerstone of the Arabi community, touching the lives 
                 of generations of faithful parishioners.
