@@ -101,25 +101,25 @@ const Gallery: React.FC = () => {
       id: 13,
       type: 'video',
       src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/embed/',
-      thumbnail: '/church.jpg',
-      title: 'Christmas Celebration 2024',
+      thumbnail: '/images/IMG-20250629-WA0074.jpg',
+      title: 'Onam Celebration 2023',
       category: 'Events'
     },
     {
       id: 14,
       type: 'video',
       src: 'https://www.instagram.com/reel/DIlpQk4TXEk/embed/',
-      thumbnail: '/images/arabi.webp',
-      title: 'Sunday Mass Highlights',
+      thumbnail: '/images/IMG-20240318-WA0038.jpg',
+      title: 'Good Friday',
       category: 'Worship'
     },
     {
       id: 15,
       type: 'video',
       src: 'https://www.instagram.com/reel/DIjXHRmTxmq/embed/',
-      thumbnail: '/images/arabischool.webp',
-      title: 'Youth Ministry Activities',
-      category: 'Youth'
+      thumbnail: '/images/IMG-20250404-WA0080.jpg',
+      title: 'Maundy Thursday',
+      category: 'Worship'
     },
     {
       id: 16,
