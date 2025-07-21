@@ -99,7 +99,7 @@ const Gallery: React.FC = () => {
     {
       id: 13,
       type: 'video',
-      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/?utm_source=ig_embed&amp;utm_campaign=loading',
+      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/embed/',
       thumbnail: '/church.jpg',
       title: 'Christmas Celebration 2024',
       category: 'Events'
@@ -107,7 +107,7 @@ const Gallery: React.FC = () => {
     {
       id: 14,
       type: 'video',
-      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/?utm_source=ig_embed&amp;utm_campaign=loading',
+      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/embed/',
       thumbnail: '/images/arabi.webp',
       title: 'Sunday Mass Highlights',
       category: 'Worship'
@@ -115,7 +115,7 @@ const Gallery: React.FC = () => {
     {
       id: 15,
       type: 'video',
-      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/?utm_source=ig_embed&amp;utm_campaign=loading',
+      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/embed/',
       thumbnail: '/images/arabischool.webp',
       title: 'Youth Ministry Activities',
       category: 'Youth'
