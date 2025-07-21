@@ -64,7 +64,7 @@ const Gallery: React.FC = () => {
     {
       id: 8,
       type: 'photo',
-      src: '/IMG-20240120-WA0085.jpg',
+      src: '/images/IMG-20240120-WA0085.jpg',
       title: 'Catechism Teachers',
       category: 'Outing'
     },
