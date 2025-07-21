@@ -45,7 +45,7 @@ const Gallery: React.FC = () => {
       type: 'photo',
       src: '/images/IMG_6059 - Copy.jpeg',
       title: 'Best KCYM Unit-Nellikkampoil Forane',
-      category: 'KCYM Arabi Unit-2023-24''
+      category: 'KCYM Arabi Unit-2023-24'
     },
     {
       id: 6,
