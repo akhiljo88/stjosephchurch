@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Video, X, Play, Image as ImageIcon } from 'lucide-react';
+import { Camera, Video, X, Play, Image as ImageIcon, Maximize } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
@@ -10,6 +10,7 @@ const Gallery: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'photos' | 'videos'>('all');
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const galleryItems = [
     {
@@ -175,8 +176,50 @@ const Gallery: React.FC = () => {
 
   const closeModal = () => {
     setSelectedMedia(null);
+    setIsFullscreen(false);
   };
 
+  const toggleFullscreen = () => {
+    const iframe = document.querySelector('.video-iframe') as HTMLIFrameElement;
+    if (iframe) {
+      if (!isFullscreen) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if ((iframe as any).webkitRequestFullscreen) {
+          (iframe as any).webkitRequestFullscreen();
+        } else if ((iframe as any).msRequestFullscreen) {
+          (iframe as any).msRequestFullscreen();
+        }
+        setIsFullscreen(true);
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          (document as any).webkitExitFullscreen();
+        } else if ((document as any).msExitFullscreen) {
+          (document as any).msExitFullscreen();
+        }
+        setIsFullscreen(false);
+      }
+    }
+  };
+
+  // Listen for fullscreen changes
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100">
       <Header onMenuClick={() => setIsNavOpen(true)} />
@@ -330,16 +373,29 @@ const Gallery: React.FC = () => {
                   className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <button
-                    onClick={closeModal}
-                    className="absolute top-4 right-4 z-10 w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
+                  <div className="absolute top-4 right-4 z-10 flex gap-2">
+                    {selectedMedia.type === 'video' && (
+                      <button
+                        onClick={toggleFullscreen}
+                        className="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                        title="Toggle Fullscreen"
+                      >
+                        <Maximize className="w-5 h-5" />
+                      </button>
+                    )}
+                    <button
+                      onClick={closeModal}
+                      className="w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-colors duration-300"
+                      title="Close"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
 
                   {selectedMedia.type === 'video' ? (
                     <div className="aspect-video">
                       <iframe
+                        className="video-iframe"
                         src={selectedMedia.src}
                         title={selectedMedia.title}
                         className="w-full h-full"
