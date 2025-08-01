@@ -149,26 +149,57 @@ const Gallery: React.FC = () => {
   };
 
   const toggleFullscreen = () => {
-    const iframe = document.querySelector('.video-iframe') as HTMLIFrameElement;
+    const iframe = document.getElementById('video-iframe') as HTMLIFrameElement;
     if (iframe) {
       if (!isFullscreen) {
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if ((iframe as any).webkitRequestFullscreen) {
-          (iframe as any).webkitRequestFullscreen();
-        } else if ((iframe as any).msRequestFullscreen) {
-          (iframe as any).msRequestFullscreen();
+        // Try different fullscreen methods
+        const requestFullscreen = iframe.requestFullscreen || 
+                                 (iframe as any).webkitRequestFullscreen || 
+                                 (iframe as any).mozRequestFullScreen || 
+                                 (iframe as any).msRequestFullscreen;
+        
+        if (requestFullscreen) {
+          requestFullscreen.call(iframe).then(() => {
+            setIsFullscreen(true);
+          }).catch((err: any) => {
+            console.error('Error attempting to enable fullscreen:', err);
+            // Fallback: try to make the modal container fullscreen
+            const modalContainer = iframe.closest('.fixed') as HTMLElement;
+            if (modalContainer && modalContainer.requestFullscreen) {
+              modalContainer.requestFullscreen().then(() => {
+                setIsFullscreen(true);
+              });
+            }
+          });
+        } else {
+          // Fallback for browsers that don't support iframe fullscreen
+          const modalContainer = iframe.closest('.fixed') as HTMLElement;
+          if (modalContainer) {
+            const requestFullscreen = modalContainer.requestFullscreen || 
+                                     (modalContainer as any).webkitRequestFullscreen || 
+                                     (modalContainer as any).mozRequestFullScreen || 
+                                     (modalContainer as any).msRequestFullscreen;
+            if (requestFullscreen) {
+              requestFullscreen.call(modalContainer).then(() => {
+                setIsFullscreen(true);
+              });
+            }
+          }
         }
-        setIsFullscreen(true);
       } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-          (document as any).webkitExitFullscreen();
-        } else if ((document as any).msExitFullscreen) {
-          (document as any).msExitFullscreen();
+        // Exit fullscreen
+        const exitFullscreen = document.exitFullscreen || 
+                              (document as any).webkitExitFullscreen || 
+                              (document as any).mozCancelFullScreen || 
+                              (document as any).msExitFullscreen;
+        
+        if (exitFullscreen) {
+          exitFullscreen.call(document).then(() => {
+            setIsFullscreen(false);
+          }).catch(() => {
+            setIsFullscreen(false);
+          });
         }
-        setIsFullscreen(false);
       }
     }
   };
@@ -176,16 +207,22 @@ const Gallery: React.FC = () => {
   // Listen for fullscreen changes
   React.useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const fullscreenElement = document.fullscreenElement || 
+                               (document as any).webkitFullscreenElement || 
+                               (document as any).mozFullScreenElement || 
+                               (document as any).msFullscreenElement;
+      setIsFullscreen(!!fullscreenElement);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
     document.addEventListener('msfullscreenchange', handleFullscreenChange);
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('msfullscreenchange', handleFullscreenChange);
     };
   }, []);
@@ -362,13 +399,14 @@ const Gallery: React.FC = () => {
                   </div>
 
                   {selectedMedia.type === 'video' ? (
-                    <div className="aspect-video">
+                    <div className="aspect-video relative">
                       <iframe
-                        className="video-iframe"
+                        id="video-iframe"
                         src={selectedMedia.src}
                         title={selectedMedia.title}
                         className="w-full h-full"
                         allowFullScreen
+                        allow="fullscreen"
                       />
                     </div>
                   ) : (
