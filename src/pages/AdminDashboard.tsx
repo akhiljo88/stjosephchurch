@@ -121,7 +121,7 @@ const AdminDashboard: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
-                <p className="text-gray-700 font-serif">Welcome back, {currentAdmin?.name || 'Akhil'}</p>
+                <p className="text-gray-700 font-serif">Welcome back,Akhil, {currentAdmin?.name || 'Akhil'}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
