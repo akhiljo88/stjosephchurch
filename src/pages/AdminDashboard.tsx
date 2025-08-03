@@ -172,54 +172,83 @@ const AdminDashboard: React.FC = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="mb-12"
           >
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/add-user')}
-                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+            <div className="grid lg:grid-cols-4 gap-8 mb-12">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-6 border-4 border-amber-200"
               >
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-xl mx-auto mb-4 overflow-hidden">
+                    <img 
+                      src="/images/3.jpg" 
+                      alt="Admin Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-red-900 mb-2 font-serif">{currentAdmin?.name || 'Administrator'}</h3>
+                  <div className="flex items-center justify-center mb-3">
+                    <Shield className="w-4 h-4 text-amber-600 mr-2" />
+                    <span className="text-amber-600 font-serif text-sm">System Administrator</span>
+                  </div>
+                  <div className="bg-amber-100 px-4 py-2 rounded-full">
+                    <span className="text-red-900 text-sm font-semibold font-serif">Full Access</span>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add User</h3>
-              </motion.button>
+              </motion.div>
+              
+              <div className="lg:col-span-3">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate('/add-user')}
+                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add User</h3>
+                  </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                </div>
-                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Events</h3>
-              </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Events</h3>
+                  </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                </div>
-                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Families</h3>
-              </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Families</h3>
+                  </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Services</h3>
+                  </motion.button>
                 </div>
-                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Services</h3>
-              </motion.button>
+              </div>
             </div>
           </motion.div>
 
