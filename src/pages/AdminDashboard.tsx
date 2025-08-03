@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, Edit, Trash2 } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, Edit, Trash2, Shield } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
 import { getUsers, deleteUser } from '../lib/database';
-import { signOut, isAdmin } from '../lib/auth';
+import { signOut, isAdmin, getCurrentUser } from '../lib/auth';
 import type { Database } from '../lib/supabase';
 
 type User = Database['public']['Tables']['users']['Row'];
@@ -18,6 +18,7 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [currentAdmin, setCurrentAdmin] = useState<any>(null);
 
   useEffect(() => {
     // Check if user is admin, redirect to login if not authenticated or not admin
@@ -25,6 +26,10 @@ const AdminDashboard: React.FC = () => {
       navigate('/login');
       return;
     }
+
+    // Get current admin user info
+    const adminUser = getCurrentUser();
+    setCurrentAdmin(adminUser);
 
     loadUsers();
   }, [navigate]);
@@ -106,9 +111,18 @@ const AdminDashboard: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="flex flex-col md:flex-row justify-between items-center mb-12"
           >
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
-              <p className="text-gray-700 font-serif">Welcome back, Administrator</p>
+            <div className="flex items-center space-x-6">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-xl overflow-hidden">
+                <img 
+                  src="/images/3.jpg" 
+                  alt="Admin Profile" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
+                <p className="text-gray-700 font-serif">Welcome back, {currentAdmin?.name || 'Administrator'}</p>
+              </div>
             </div>
             <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
               <button
