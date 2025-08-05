@@ -134,6 +134,60 @@ export const deleteUser = async (id: string): Promise<boolean> => {
   return true;
 };
 
+// Event management functions
+export const getEvents = async () => {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching events:', error);
+    return [];
+  }
+
+  return data || [];
+};
+
+export const addEvent = async (eventData: {
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+}) => {
+  const { data, error } = await supabase
+    .from('events')
+    .insert({
+      title: eventData.title,
+      description: eventData.description,
+      date: eventData.date,
+      time: eventData.time
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding event:', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const deleteEvent = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('events')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting event:', error);
+    return false;
+  }
+
+  return true;
+};
+
 export const getUserById = async (id: string): Promise<User | null> => {
   const { data, error } = await supabase
     .from('users')

@@ -22,6 +22,7 @@ import UpdateUser from './pages/UpdateUser';
 import ArabiHistory from './pages/ArabiHistory';
 import Gallery from './pages/Gallery';
 import Directory from './pages/Directory';
+import AddEvent from './pages/AddEvent';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/arabi-history" element={<ArabiHistory />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/directory" element={<Directory />} />
+          <Route path="/add-event" element={<AddEvent />} />
         </Routes>
       </div>
     </Router>
