@@ -9,6 +9,23 @@ import Copyright from '../components/Copyright';
 const Events: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [dbEvents, setDbEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  const loadEvents = async () => {
+    setLoading(true);
+    try {
+      const events = await getEvents();
+      setDbEvents(events);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const massTimings = [
     { day: "Sunday", timings: ["8:00 AM", "10:15 AM"], special: "Student Mass at 10:15 AM" },
