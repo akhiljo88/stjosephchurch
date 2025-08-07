@@ -5,16 +5,18 @@ import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plu
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getUsers, deleteUser } from '../lib/database';
+import { getUsers, deleteUser, getEvents, deleteEvent } from '../lib/database';
 import { signOut, isAdmin, getCurrentUser } from '../lib/auth';
 import type { Database } from '../lib/supabase';
 
 type User = Database['public']['Tables']['users']['Row'];
+type Event = Database['public']['Tables']['events']['Row'];
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -32,6 +34,7 @@ const AdminDashboard: React.FC = () => {
     setCurrentAdmin(adminUser);
 
     loadUsers();
+    loadEvents();
   }, [navigate]);
 
   useEffect(() => {
@@ -59,6 +62,15 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const loadEvents = async () => {
+    try {
+      const eventsData = await getEvents();
+      setEvents(eventsData);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  };
+
   const handleDeleteUser = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const success = await deleteUser(id);
@@ -66,6 +78,17 @@ const AdminDashboard: React.FC = () => {
         await loadUsers(); // Reload users after deletion
       } else {
         alert('Failed to delete user. Please try again.');
+      }
+    }
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      const success = await deleteEvent(id);
+      if (success) {
+        await loadEvents(); // Reload events after deletion
+      } else {
+        alert('Failed to delete event. Please try again.');
       }
     }
   };
@@ -81,7 +104,7 @@ const AdminDashboard: React.FC = () => {
 
   const dashboardStats = [
     { label: 'Total Members', value: users.length.toString(), icon: Users, color: 'from-blue-600 to-blue-700' },
-    { label: 'Active Events', value: '8', icon: Calendar, color: 'from-green-600 to-green-700' },
+    { label: 'Active Events', value: events.length.toString(), icon: Calendar, color: 'from-green-600 to-green-700' },
     { label: 'Prayer Requests', value: '23', icon: Heart, color: 'from-red-600 to-red-700' },
     { label: 'Messages', value: '15', icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
   ];
@@ -256,7 +279,68 @@ const AdminDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Event Management</h2>
+            
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200 overflow-x-auto">
+              {loading ? (
+                <div className="text-center py-8">
+                  <p className="text-red-900 font-serif">Loading events...</p>
+                </div>
+              ) : events.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 font-serif">No events found. Add your first event to get started.</p>
+                </div>
+              ) : (
+                <table className="w-full min-w-[800px]">
+                  <thead>
+                    <tr className="border-b-2 border-amber-300">
+                      <th className="text-left p-3 text-red-900 font-serif">Title</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Date</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Time</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Description</th>
+                      <th className="text-left p-3 text-red-900 font-serif">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {events.map((event) => (
+                      <tr key={event.id} className="border-b border-amber-200 hover:bg-amber-100">
+                        <td className="p-3 font-serif text-red-900 font-semibold">{event.title}</td>
+                        <td className="p-3 font-serif text-red-900">{new Date(event.date).toLocaleDateString()}</td>
+                        <td className="p-3 font-serif text-red-900">{event.time}</td>
+                        <td className="p-3 font-serif text-red-900 max-w-xs truncate">{event.description}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => navigate(`/edit-event/${event.id}`)}
+                              className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                              title="Edit Event"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteEvent(event.id)}
+                              className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                              title="Delete Event"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
@@ -361,7 +445,7 @@ const AdminDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
             className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Recent Activities</h2>

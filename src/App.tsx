@@ -23,6 +23,7 @@ import ArabiHistory from './pages/ArabiHistory';
 import Gallery from './pages/Gallery';
 import Directory from './pages/Directory';
 import AddEvent from './pages/AddEvent';
+import EditEvent from './pages/EditEvent';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/directory" element={<Directory />} />
           <Route path="/add-event" element={<AddEvent />} />
+          <Route path="/edit-event/:id" element={<EditEvent />} />
         </Routes>
       </div>
     </Router>

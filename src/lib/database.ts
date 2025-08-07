@@ -188,6 +188,33 @@ export const deleteEvent = async (id: string): Promise<boolean> => {
   return true;
 };
 
+export const updateEvent = async (id: string, eventData: {
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+}) => {
+  const { data, error } = await supabase
+    .from('events')
+    .update({
+      title: eventData.title,
+      description: eventData.description,
+      date: eventData.date,
+      time: eventData.time,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating event:', error);
+    return null;
+  }
+
+  return data;
+};
+
 export const getUserById = async (id: string): Promise<User | null> => {
   const { data, error } = await supabase
     .from('users')
