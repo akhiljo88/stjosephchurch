@@ -120,14 +120,6 @@ const Gallery: React.FC = () => {
       thumbnail: '/images/IMG-20250404-WA0080.jpg',
       title: 'Maundy Thursday',
       category: 'Worship'
-    },
-    {
-      id: 16,
-      type: 'video',
-      src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/arwaterfallsc.jpg',
-      title: 'Parish Retreat 2024',
-      category: 'Events'
     }
     
   ];
