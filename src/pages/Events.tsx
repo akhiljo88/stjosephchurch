@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Clock, MapPin, Star, Bell, Heart } from 'lucide-react';
+import { getEvents } from '../lib/database';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
