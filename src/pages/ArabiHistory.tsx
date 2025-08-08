@@ -158,7 +158,28 @@ const ArabiHistory: React.FC = () => {
                   </div>
                 </motion.div>
 
-               
+              <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl overflow-hidden border-2 border-amber-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <img 
+                      src="/images/james.jpg"
+                      alt="Parish Coordinator"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="text-white font-bold text-lg font-serif">Nisha Teacher</h3>
+                      <p className="text-amber-200 text-sm font-serif">Ward Member-Organizing community activities</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+  
             <h2 className="text-3xl font-bold text-center text-red-900 mb-12 font-serif">Historical Timeline</h2>
             <div className="relative">
               {/* Vertical timeline line */}
