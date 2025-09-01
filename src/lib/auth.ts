@@ -94,30 +94,44 @@ export const getCurrentUserWithPhoto = async (): Promise<User | null> => {
     const localUser = getCurrentUser();
     if (!localUser) return null;
 
-    // Fetch complete user data from database including family photo
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', localUser.id)
-      .single();
-
-    if (error || !data) {
-      console.error('Error fetching user with photo:', error);
-      return localUser; // Return local user as fallback
+    // Check if Supabase is properly configured
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.warn('Supabase not configured, returning local user data');
+      return localUser;
     }
 
-    return {
-      id: data.id,
-      name: data.name,
-      username: data.username,
-      monthlyCollection: data.monthly_collection || 0,
-      cleaning: data.cleaning || 0,
-      commonWork: data.common_work || 0,
-      funeralFund: data.funeral_fund || 0,
-      total: data.total || 0,
-      isAdmin: data.is_admin || false,
-      familyPhoto: data.family_photo || null
-    };
+    try {
+      // Fetch complete user data from database including family photo
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', localUser.id)
+        .single();
+
+      if (error || !data) {
+        console.error('Error fetching user with photo:', error);
+        return localUser; // Return local user as fallback
+      }
+
+      return {
+        id: data.id,
+        name: data.name,
+        username: data.username,
+        monthlyCollection: data.monthly_collection || 0,
+        cleaning: data.cleaning || 0,
+        commonWork: data.common_work || 0,
+        funeralFund: data.funeral_fund || 0,
+        total: data.total || 0,
+        isAdmin: data.is_admin || false,
+        familyPhoto: data.family_photo || null
+      };
+    } catch (fetchError) {
+      console.error('Network error fetching user with photo:', fetchError);
+      return localUser; // Return local user as fallback
+    }
   } catch (error) {
     console.error('Error getting current user with photo:', error);
     return getCurrentUser(); // Return local user as fallback
