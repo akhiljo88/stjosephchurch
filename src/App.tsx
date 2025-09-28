@@ -24,6 +24,9 @@ import Gallery from './pages/Gallery';
 import Directory from './pages/Directory';
 import AddEvent from './pages/AddEvent';
 import EditEvent from './pages/EditEvent';
+import AddMedia from './pages/AddMedia';
+import AddFamily from './pages/AddFamily';
+import FamiliesDirectory from './pages/FamiliesDirectory';
 
 function App() {
   return (
@@ -51,6 +54,9 @@ function App() {
           <Route path="/directory" element={<Directory />} />
           <Route path="/add-event" element={<AddEvent />} />
           <Route path="/edit-event/:id" element={<EditEvent />} />
+          <Route path="/add-media" element={<AddMedia />} />
+          <Route path="/add-family" element={<AddFamily />} />
+          <Route path="/families-directory" element={<FamiliesDirectory />} />
         </Routes>
       </div>
     </Router>

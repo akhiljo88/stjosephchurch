@@ -253,6 +253,7 @@ const AdminDashboard: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate('/add-family')}
                     className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
                   >
                     <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -264,12 +265,13 @@ const AdminDashboard: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate('/add-media')}
                     className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
                   >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </div>
-                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Services</h3>
+                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Images</h3>
                   </motion.button>
                 </div>
               </div>

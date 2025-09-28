@@ -230,6 +230,104 @@ export const getUserById = async (id: string): Promise<User | null> => {
   return data;
 };
 
+// Media management functions
+export const addMedia = async (mediaData: {
+  title: string;
+  description: string;
+  category: string;
+  type: string;
+  src: string;
+  filename: string;
+}) => {
+  const { data, error } = await supabase
+    .from('media')
+    .insert({
+      title: mediaData.title,
+      description: mediaData.description,
+      category: mediaData.category,
+      type: mediaData.type,
+      src: mediaData.src,
+      filename: mediaData.filename
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding media:', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const getMedia = async () => {
+  const { data, error } = await supabase
+    .from('media')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching media:', error);
+    return [];
+  }
+
+  return data || [];
+};
+
+// Family management functions
+export const addFamily = async (familyData: {
+  headOfFamily: string;
+  contactNumber: string;
+  address: string;
+  numberOfMembers: number;
+  members: any[];
+  familyPhoto?: string | null;
+}) => {
+  const { data, error } = await supabase
+    .from('families')
+    .insert({
+      head_of_family: familyData.headOfFamily,
+      contact_number: familyData.contactNumber,
+      address: familyData.address,
+      number_of_members: familyData.numberOfMembers,
+      members: familyData.members,
+      family_photo: familyData.familyPhoto || null
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding family:', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const getFamilies = async () => {
+  const { data, error } = await supabase
+    .from('families')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching families:', error);
+    return [];
+  }
+
+  // Transform the data to match our interface
+  return (data || []).map(family => ({
+    id: family.id,
+    headOfFamily: family.head_of_family,
+    contactNumber: family.contact_number,
+    address: family.address,
+    numberOfMembers: family.number_of_members,
+    members: family.members || [],
+    familyPhoto: family.family_photo,
+    created_at: family.created_at
+  }));
+};
+
 // Contact form submission
 export const submitContactForm = async (formData: {
   name: string;

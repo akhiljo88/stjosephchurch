@@ -108,9 +108,16 @@ const Families: React.FC = () => {
             {familyStats.map((stat, index) => {
               const IconComponent = stat.icon;
               return (
-                <div
+                <motion.div
                   key={stat.label}
+                  whileHover={{ scale: 1.05 }}
+                  onClick={() => {
+                    if (stat.label === 'Registered Families') {
+                      window.location.href = '/families-directory';
+                    }
+                  }}
                   className="bg-gradient-to-br from-red-800 to-red-900 rounded-2xl p-6 text-center shadow-xl"
+                  style={{ cursor: stat.label === 'Registered Families' ? 'pointer' : 'default' }}
                 >
                   <motion.div
                     initial={{ scale: 0 }}
@@ -122,7 +129,7 @@ const Families: React.FC = () => {
                   </motion.div>
                   <h3 className="text-3xl font-bold text-amber-100 mb-2 font-serif">{stat.number}</h3>
                   <p className="text-amber-200 font-serif">{stat.label}</p>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
