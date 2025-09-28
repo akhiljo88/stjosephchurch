@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, Edit, Trash2, Shield } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, CreditCard as Edit, Trash2, Shield } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
