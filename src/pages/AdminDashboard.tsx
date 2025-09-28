@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, CreditCard as Edit, Trash2, Shield } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, Edit, Trash2 } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getUsers, deleteUser, getEvents, deleteEvent } from '../lib/database';
-import { signOut, isAdmin, getCurrentUser } from '../lib/auth';
+import { getUsers, deleteUser } from '../lib/database';
+import { signOut, isAdmin } from '../lib/auth';
 import type { Database } from '../lib/supabase';
 
 type User = Database['public']['Tables']['users']['Row'];
-type Event = Database['public']['Tables']['events']['Row'];
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
-  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [currentAdmin, setCurrentAdmin] = useState<any>(null);
 
   useEffect(() => {
     // Check if user is admin, redirect to login if not authenticated or not admin
@@ -29,12 +26,7 @@ const AdminDashboard: React.FC = () => {
       return;
     }
 
-    // Get current admin user info
-    const adminUser = getCurrentUser();
-    setCurrentAdmin(adminUser);
-
     loadUsers();
-    loadEvents();
   }, [navigate]);
 
   useEffect(() => {
@@ -62,15 +54,6 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const loadEvents = async () => {
-    try {
-      const eventsData = await getEvents();
-      setEvents(eventsData);
-    } catch (error) {
-      console.error('Error loading events:', error);
-    }
-  };
-
   const handleDeleteUser = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const success = await deleteUser(id);
@@ -78,17 +61,6 @@ const AdminDashboard: React.FC = () => {
         await loadUsers(); // Reload users after deletion
       } else {
         alert('Failed to delete user. Please try again.');
-      }
-    }
-  };
-
-  const handleDeleteEvent = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      const success = await deleteEvent(id);
-      if (success) {
-        await loadEvents(); // Reload events after deletion
-      } else {
-        alert('Failed to delete event. Please try again.');
       }
     }
   };
@@ -104,7 +76,7 @@ const AdminDashboard: React.FC = () => {
 
   const dashboardStats = [
     { label: 'Total Members', value: users.length.toString(), icon: Users, color: 'from-blue-600 to-blue-700' },
-    { label: 'Active Events', value: events.length.toString(), icon: Calendar, color: 'from-green-600 to-green-700' },
+    { label: 'Active Events', value: '8', icon: Calendar, color: 'from-green-600 to-green-700' },
     { label: 'Prayer Requests', value: '23', icon: Heart, color: 'from-red-600 to-red-700' },
     { label: 'Messages', value: '15', icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
   ];
@@ -134,18 +106,9 @@ const AdminDashboard: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="flex flex-col md:flex-row justify-between items-center mb-12"
           >
-            <div className="flex items-center space-x-6">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-xl overflow-hidden">
-                <img 
-                  src="/images/3.jpg" 
-                  alt="Admin Profile" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
-                <p className="text-gray-700 font-serif">Akhil, {currentAdmin?.name || 'Administrator'}</p>
-              </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
+              <p className="text-gray-700 font-serif">Welcome back, Administrator</p>
             </div>
             <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
               <button
@@ -195,154 +158,61 @@ const AdminDashboard: React.FC = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="mb-12"
           >
-            <div className="grid lg:grid-cols-4 gap-8 mb-12">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-6 border-4 border-amber-200"
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/add-user')}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
               >
-                <div className="text-center">
-                  <div className="w-24 h-24 bg-gradient-to-br from-red-800 to-red-900 rounded-full flex items-center justify-center shadow-xl mx-auto mb-4 overflow-hidden">
-                    <img 
-                      src="/images/3.jpg" 
-                      alt="Admin Profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-red-900 mb-2 font-serif">{currentAdmin?.name || 'Akhil'}</h3>
-                  <div className="flex items-center justify-center mb-3">
-                    <Shield className="w-4 h-4 text-amber-600 mr-2" />
-                    <span className="text-amber-600 font-serif text-sm">System Administrator</span>
-                  </div>
-                  <div className="bg-amber-100 px-4 py-2 rounded-full">
-                    <span className="text-red-900 text-sm font-semibold font-serif">Full Access</span>
-                  </div>
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 </div>
-              </motion.div>
-              
-              <div className="lg:col-span-3">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add User</h3>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/add-user')}
-                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add User</h3>
-                  </motion.button>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Events</h3>
+              </motion.button>
 
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/add-event')}
-                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Calendar className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Events</h3>
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/add-family')}
-                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Families</h3>
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/add-media')}
-                    className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Images</h3>
-                  </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 </div>
-              </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Families</h3>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                </div>
+                <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Services</h3>
+              </motion.button>
             </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="mb-12"
-          >
-            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Event Management</h2>
-            
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200 overflow-x-auto">
-              {loading ? (
-                <div className="text-center py-8">
-                  <p className="text-red-900 font-serif">Loading events...</p>
-                </div>
-              ) : events.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500 font-serif">No events found. Add your first event to get started.</p>
-                </div>
-              ) : (
-                <table className="w-full min-w-[800px]">
-                  <thead>
-                    <tr className="border-b-2 border-amber-300">
-                      <th className="text-left p-3 text-red-900 font-serif">Title</th>
-                      <th className="text-left p-3 text-red-900 font-serif">Date</th>
-                      <th className="text-left p-3 text-red-900 font-serif">Time</th>
-                      <th className="text-left p-3 text-red-900 font-serif">Description</th>
-                      <th className="text-left p-3 text-red-900 font-serif">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {events.map((event) => (
-                      <tr key={event.id} className="border-b border-amber-200 hover:bg-amber-100">
-                        <td className="p-3 font-serif text-red-900 font-semibold">{event.title}</td>
-                        <td className="p-3 font-serif text-red-900">{new Date(event.date).toLocaleDateString()}</td>
-                        <td className="p-3 font-serif text-red-900">{event.time}</td>
-                        <td className="p-3 font-serif text-red-900 max-w-xs truncate">{event.description}</td>
-                        <td className="p-3">
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => navigate(`/edit-event/${event.id}`)}
-                              className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
-                              title="Edit Event"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteEvent(event.id)}
-                              className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
-                              title="Delete Event"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.8 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
@@ -447,7 +317,7 @@ const AdminDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
             className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Recent Activities</h2>

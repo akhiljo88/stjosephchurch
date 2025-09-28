@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Calendar, Heart, LogOut, Home, Upload, Image, Brain, TrendingUp, DollarSign, Calculator } from 'lucide-react';
+import { User, Calendar, Heart, LogOut, Home, Upload, Image } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
 import { getCurrentUserWithPhoto, signOut, isAuthenticated, isUser } from '../lib/auth';
 import type { User as UserType } from '../lib/auth';
-import FinancialPlanningAI from '../components/FinancialPlanningAI';
 
 const UserDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showFinancialPlanning, setShowFinancialPlanning] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated and is a regular user (not admin)
@@ -120,13 +118,6 @@ const UserDashboard: React.FC = () => {
             <button className="flex items-center px-4 py-2 md:px-6 md:py-3 bg-green-800 hover:bg-green-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif">
               <Calendar className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Book Mass
-            </button>
-            <button
-              onClick={() => setShowFinancialPlanning(true)}
-              className="flex items-center px-4 py-2 md:px-6 md:py-3 bg-purple-800 hover:bg-purple-900 text-amber-100 rounded-full shadow-lg transition-colors duration-300 font-serif"
-            >
-              <Brain className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              AI Financial Planning
             </button>
           </motion.div>
 
@@ -239,17 +230,6 @@ const UserDashboard: React.FC = () => {
           </motion.div>
         </div>
       </div>
-      
-      {/* AI Financial Planning Modal */}
-      <AnimatePresence>
-        {showFinancialPlanning && user && (
-          <FinancialPlanningAI
-            user={user}
-            onClose={() => setShowFinancialPlanning(false)}
-          />
-        )}
-      </AnimatePresence>
-      
       <Copyright />
     </div>
   );

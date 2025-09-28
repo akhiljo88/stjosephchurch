@@ -158,7 +158,7 @@ const ArabiHistory: React.FC = () => {
                   </div>
                 </motion.div>
 
-              <motion.div
+                <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.6, duration: 0.8 }}
@@ -179,7 +179,7 @@ const ArabiHistory: React.FC = () => {
                 </motion.div>
               </div>
             </motion.div>
-  
+
             <h2 className="text-3xl font-bold text-center text-red-900 mb-12 font-serif">Historical Timeline</h2>
             <div className="relative">
               {/* Vertical timeline line */}
