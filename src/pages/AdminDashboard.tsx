@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
 import { getUsers, deleteUser } from '../lib/database';
 import { signOut, isAdmin } from '../lib/auth';
+import { getCurrentUserWithPhoto } from '../lib/auth';
 import type { Database } from '../lib/supabase';
 
 type User = Database['public']['Tables']['users']['Row'];
