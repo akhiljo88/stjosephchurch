@@ -22,6 +22,8 @@ const AdminDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [currentAdmin, setCurrentAdmin] = useState<User | null>(null);
+  const [families, setFamilies] = useState<any[]>([]);
+  const [media, setMedia] = useState<any[]>([]);
 
   useEffect(() => {
     // Check if user is admin, redirect to login if not authenticated or not admin
@@ -33,6 +35,8 @@ const AdminDashboard: React.FC = () => {
     loadUsers();
     loadEvents();
     loadCurrentAdmin();
+    loadFamilies();
+    loadMedia();
   }, [navigate]);
 
   useEffect(() => {
@@ -69,6 +73,26 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const loadFamilies = async () => {
+    try {
+      const { getFamilies } = await import('../lib/database');
+      const familiesData = await getFamilies();
+      setFamilies(familiesData);
+    } catch (error) {
+      console.error('Error loading families:', error);
+    }
+  };
+
+  const loadMedia = async () => {
+    try {
+      const { getMedia } = await import('../lib/database');
+      const mediaData = await getMedia();
+      setMedia(mediaData);
+    } catch (error) {
+      console.error('Error loading media:', error);
+    }
+  };
+
   const handleDeleteEvent = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       const success = await deleteEvent(id);
@@ -76,6 +100,38 @@ const AdminDashboard: React.FC = () => {
         await loadEvents(); // Reload events after deletion
       } else {
         alert('Failed to delete event. Please try again.');
+      }
+    }
+  };
+
+  const handleDeleteFamily = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this family?')) {
+      try {
+        const { deleteFamily } = await import('../lib/database');
+        const success = await deleteFamily(id);
+        if (success) {
+          await loadFamilies();
+        } else {
+          alert('Failed to delete family. Please try again.');
+        }
+      } catch (error) {
+        alert('Failed to delete family. Please try again.');
+      }
+    }
+  };
+
+  const handleDeleteMedia = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this media?')) {
+      try {
+        const { deleteMedia } = await import('../lib/database');
+        const success = await deleteMedia(id);
+        if (success) {
+          await loadMedia();
+        } else {
+          alert('Failed to delete media. Please try again.');
+        }
+      } catch (error) {
+        alert('Failed to delete media. Please try again.');
       }
     }
   };
@@ -112,8 +168,8 @@ const AdminDashboard: React.FC = () => {
   const dashboardStats = [
     { label: 'Total Members', value: users.length.toString(), icon: Users, color: 'from-blue-600 to-blue-700' },
     { label: 'Active Events', value: events.length.toString(), icon: Calendar, color: 'from-green-600 to-green-700' },
-    { label: 'Prayer Requests', value: '23', icon: Heart, color: 'from-red-600 to-red-700' },
-    { label: 'Messages', value: '15', icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
+    { label: 'Registered Families', value: families.length.toString(), icon: Heart, color: 'from-red-600 to-red-700' },
+    { label: 'Gallery Items', value: media.length.toString(), icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
   ];
 
   const recentActivities = [
