@@ -174,3 +174,135 @@ export const submitContactForm = async (formData: {
 
   return true;
 };
+
+// Event management functions
+export const getEvents = async () => {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching events:', error);
+    return [];
+  }
+
+  return data || [];
+};
+
+export const addEvent = async (eventData: {
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+}) => {
+  const { data, error } = await supabase
+    .from('events')
+    .insert({
+      title: eventData.title,
+      description: eventData.description,
+      date: eventData.date,
+      time: eventData.time
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding event:', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const updateEvent = async (id: string, updates: {
+  title?: string;
+  description?: string;
+  date?: string;
+  time?: string;
+}) => {
+  const { data, error } = await supabase
+    .from('events')
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating event:', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const deleteEvent = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('events')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting event:', error);
+    return false;
+  }
+
+  return true;
+};
+
+// Media management functions
+export const addMedia = async (mediaData: {
+  title: string;
+  description: string;
+  category: string;
+  type: string;
+  src: string;
+  filename: string;
+}) => {
+  // For now, we'll store media data in localStorage since we can't create new tables
+  const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+  const newMedia = {
+    id: Date.now().toString(),
+    ...mediaData,
+    created_at: new Date().toISOString()
+  };
+  
+  existingMedia.push(newMedia);
+  localStorage.setItem('gallery_media', JSON.stringify(existingMedia));
+  
+  return newMedia;
+};
+
+export const getMedia = async () => {
+  return JSON.parse(localStorage.getItem('gallery_media') || '[]');
+};
+
+// Family management functions
+export const addFamily = async (familyData: {
+  headOfFamily: string;
+  contactNumber: string;
+  address: string;
+  numberOfMembers: number;
+  members: Array<{ name: string; age: number; relation: string }>;
+  familyPhoto?: string | null;
+}) => {
+  // Store family data in localStorage since we can't create new tables
+  const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
+  const newFamily = {
+    id: Date.now().toString(),
+    ...familyData,
+    created_at: new Date().toISOString()
+  };
+  
+  existingFamilies.push(newFamily);
+  localStorage.setItem('church_families', JSON.stringify(existingFamilies));
+  
+  return newFamily;
+};
+
+export const getFamilies = async () => {
+  return JSON.parse(localStorage.getItem('church_families') || '[]');
+};

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Home, Users, Baby, GraduationCap, Calendar } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
@@ -7,6 +8,7 @@ import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
 
 const Families: React.FC = () => {
+  const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const familyPrograms = [
@@ -110,7 +112,10 @@ const Families: React.FC = () => {
               return (
                 <div
                   key={stat.label}
-                  className="bg-gradient-to-br from-red-800 to-red-900 rounded-2xl p-6 text-center shadow-xl"
+                  className={`bg-gradient-to-br from-red-800 to-red-900 rounded-2xl p-6 text-center shadow-xl transition-all duration-300 ${
+                    stat.label === 'Registered Families' ? 'cursor-pointer hover:shadow-2xl hover:scale-105' : ''
+                  }`}
+                  onClick={stat.label === 'Registered Families' ? () => navigate('/families-directory') : undefined}
                 >
                   <motion.div
                     initial={{ scale: 0 }}

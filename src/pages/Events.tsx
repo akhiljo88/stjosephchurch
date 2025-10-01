@@ -5,9 +5,24 @@ import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
+import { getEvents } from '../lib/database';
 
 const Events: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [adminEvents, setAdminEvents] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    loadAdminEvents();
+  }, []);
+
+  const loadAdminEvents = async () => {
+    try {
+      const events = await getEvents();
+      setAdminEvents(events);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  };
 
   const massTimings = [
     { day: "Sunday", timings: ["8:00 AM", "10:15 AM"], special: "Student Mass at 10:15 AM" },
@@ -147,7 +162,44 @@ const Events: React.FC = () => {
             transition={{ delay: 0.8, duration: 0.8 }}
           >
             <h2 className="text-3xl font-bold text-center text-red-900 mb-12 font-serif">Upcoming Events</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {/* Admin-added events */}
+              {adminEvents.map((event, index) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 1 + index * 0.15, duration: 0.8 }}
+                  className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl overflow-hidden border-4 border-amber-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-105 group"
+                >
+                  <div className="p-8">
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl mb-6 mx-auto group-hover:shadow-2xl"
+                    >
+                      <Calendar className="w-10 h-10 text-white" />
+                    </motion.div>
+                    
+                    <h3 className="text-xl font-bold text-red-900 mb-3 font-serif text-center">{event.title}</h3>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center justify-center text-amber-600">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span className="font-semibold font-serif">{event.date}</span>
+                      </div>
+                      <div className="flex items-center justify-center text-amber-600">
+                        <Clock className="w-4 h-4 mr-2" />
+                        <span className="font-semibold font-serif">{event.time}</span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-700 leading-relaxed font-serif text-center text-sm">{event.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+              
+              {/* Static events */}
               {upcomingEvents.map((event, index) => {
                 const IconComponent = event.icon;
                 return (
@@ -155,7 +207,7 @@ const Events: React.FC = () => {
                     key={event.title}
                     initial={{ opacity: 0, y: 50, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: 1 + index * 0.15, duration: 0.8 }}
+                    transition={{ delay: 1 + adminEvents.length * 0.15 + index * 0.15, duration: 0.8 }}
                     className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl overflow-hidden border-4 border-amber-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-105 group"
                   >
                     <div className="p-8">

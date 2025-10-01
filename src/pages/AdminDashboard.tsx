@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, CreditCard as Edit, Trash2 } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, Settings, BarChart3, LogOut, Plus, Home, CreditCard as Edit, Trash2, Camera, Image } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { getUsers, deleteUser } from '../lib/database';
+import { getUsers, deleteUser, getEvents, deleteEvent } from '../lib/database';
 import { signOut, isAdmin } from '../lib/auth';
 import { getCurrentUserWithPhoto } from '../lib/auth';
 import type { Database } from '../lib/supabase';
 
 type User = Database['public']['Tables']['users']['Row'];
+type Event = Database['public']['Tables']['events']['Row'];
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -29,6 +31,7 @@ const AdminDashboard: React.FC = () => {
     }
 
     loadUsers();
+    loadEvents();
     loadCurrentAdmin();
   }, [navigate]);
 
@@ -54,6 +57,26 @@ const AdminDashboard: React.FC = () => {
       console.error('Error loading users:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadEvents = async () => {
+    try {
+      const eventsData = await getEvents();
+      setEvents(eventsData);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      const success = await deleteEvent(id);
+      if (success) {
+        await loadEvents(); // Reload events after deletion
+      } else {
+        alert('Failed to delete event. Please try again.');
+      }
     }
   };
 
@@ -88,7 +111,7 @@ const AdminDashboard: React.FC = () => {
 
   const dashboardStats = [
     { label: 'Total Members', value: users.length.toString(), icon: Users, color: 'from-blue-600 to-blue-700' },
-    { label: 'Active Events', value: '8', icon: Calendar, color: 'from-green-600 to-green-700' },
+    { label: 'Active Events', value: events.length.toString(), icon: Calendar, color: 'from-green-600 to-green-700' },
     { label: 'Prayer Requests', value: '23', icon: Heart, color: 'from-red-600 to-red-700' },
     { label: 'Messages', value: '15', icon: MessageSquare, color: 'from-purple-600 to-purple-700' }
   ];
@@ -119,8 +142,21 @@ const AdminDashboard: React.FC = () => {
             className="flex flex-col md:flex-row justify-between items-center mb-12"
           >
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
-              <p className="text-gray-700 font-serif">Welcome back, Akhil Jose</p>
+              <div className="flex items-center space-x-4 mb-4">
+                {currentAdmin?.family_photo && (
+                  <div className="w-16 h-16 bg-gradient-to-br from-red-800 to-red-900 rounded-full overflow-hidden border-4 border-amber-300 shadow-xl">
+                    <img
+                      src={currentAdmin.family_photo}
+                      alt={currentAdmin.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-red-900 mb-2 font-serif">Admin Dashboard</h1>
+                  <p className="text-gray-700 font-serif">Welcome back, {currentAdmin?.name || 'Administrator'}</p>
+                </div>
+              </div>
             </div>
             <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
               <button
@@ -216,18 +252,79 @@ const AdminDashboard: React.FC = () => {
                 onClick={() => navigate('/add-media')}
                 className="p-4 md:p-6 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl shadow-xl border-2 border-amber-200 hover:shadow-2xl transition-all duration-300"
               >
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Plus className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Camera className="w-6 h-6 md:w-8 md:h-8 text-white" />
                 </div>
                 <h3 className="font-semibold text-red-900 font-serif text-sm md:text-base">Add Images</h3>
               </motion.button>
             </div>
           </motion.div>
 
+          {/* Events Management Section */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Events Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200">
+              {events.length === 0 ? (
+                <div className="text-center py-8">
+                  <Calendar className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+                  <p className="text-gray-500 font-serif text-xl mb-4">No events created yet</p>
+                  <button
+                    onClick={() => navigate('/add-event')}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Create First Event
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {events.map((event) => (
+                    <div key={event.id} className="bg-white p-6 rounded-2xl shadow-lg border border-amber-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center">
+                          <Calendar className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => navigate(`/edit-event/${event.id}`)}
+                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEvent(event.id)}
+                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-bold text-red-900 mb-2 font-serif">{event.title}</h3>
+                      <p className="text-gray-600 text-sm mb-3 font-serif line-clamp-2">{event.description}</p>
+                      <div className="space-y-1">
+                        <p className="text-amber-600 text-sm font-serif">
+                          <strong>Date:</strong> {event.date}
+                        </p>
+                        <p className="text-amber-600 text-sm font-serif">
+                          <strong>Time:</strong> {event.time}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">User Management</h2>
@@ -332,7 +429,7 @@ const AdminDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
             className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Recent Activities</h2>
