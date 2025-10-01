@@ -306,3 +306,15 @@ export const addFamily = async (familyData: {
 export const getFamilies = async () => {
   return JSON.parse(localStorage.getItem('church_families') || '[]');
 };
+
+export const deleteFamily = async (id: string): Promise<boolean> => {
+  try {
+    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
+    const filteredFamilies = existingFamilies.filter((family: any) => family.id !== id);
+    localStorage.setItem('church_families', JSON.stringify(filteredFamilies));
+    return true;
+  } catch (error) {
+    console.error('Error deleting family:', error);
+    return false;
+  }
+};
