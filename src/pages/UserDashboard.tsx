@@ -335,7 +335,6 @@ const UserDashboard: React.FC = () => {
       </AnimatePresence>
       
       <Copyright />
-    </div>
   );
 };
 
