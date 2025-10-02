@@ -28,7 +28,7 @@ import AddMedia from './pages/AddMedia';
 import AddFamily from './pages/AddFamily';
 import FamiliesDirectory from './pages/FamiliesDirectory';
 import EditFamily from './pages/EditFamily';
-import EditMedia from './pages/EditMedia';</parameter>
+import EditMedia from './pages/EditMedia';
 
 function App() {
   return (
