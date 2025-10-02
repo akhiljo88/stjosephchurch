@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, FileText, Save, Home, ArrowLeft, X } from 'lucide-react';
+import { Calendar, Clock, FileText, Save, Home, ArrowLeft, X, Image, Plus } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
-import { addEvent } from '../lib/database';
+import { addEvent, getMedia } from '../lib/database';
 import { isAdmin } from '../lib/auth';
 
 const AddEvent: React.FC = () => {
@@ -13,6 +13,9 @@ const AddEvent: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [availableMedia, setAvailableMedia] = useState<any[]>([]);
+  const [showImageGallery, setShowImageGallery] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -25,7 +28,25 @@ const AddEvent: React.FC = () => {
     if (!isAdmin()) {
       navigate('/login');
     }
+    loadAvailableMedia();
   }, [navigate]);
+
+  const loadAvailableMedia = async () => {
+    try {
+      const media = await getMedia();
+      setAvailableMedia(media.filter((item: any) => item.type === 'photo'));
+    } catch (error) {
+      console.error('Error loading media:', error);
+    }
+  };
+
+  const toggleImageSelection = (imageSrc: string) => {
+    setSelectedImages(prev => 
+      prev.includes(imageSrc) 
+        ? prev.filter(src => src !== imageSrc)
+        : [...prev, imageSrc]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +54,11 @@ const AddEvent: React.FC = () => {
     setError('');
 
     try {
-      const result = await addEvent(formData);
+      const eventData = {
+        ...formData,
+        images: selectedImages
+      };
+      const result = await addEvent(eventData);
       
       if (result) {
         navigate('/admin-dashboard');

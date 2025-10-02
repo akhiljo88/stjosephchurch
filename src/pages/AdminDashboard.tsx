@@ -316,11 +316,158 @@ const AdminDashboard: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Events Management Section */}
+          {/* Families Management Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Families Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200">
+              {families.length === 0 ? (
+                <div className="text-center py-8">
+                  <Users className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+                  <p className="text-gray-500 font-serif text-xl mb-4">No families registered yet</p>
+                  <button
+                    onClick={() => navigate('/add-family')}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Register First Family
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-amber-600 font-serif">Showing {Math.min(families.length, 5)} of {families.length} families</p>
+                    <button
+                      onClick={() => navigate('/families-directory')}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-serif text-sm transition-colors duration-300"
+                    >
+                      View All Families
+                    </button>
+                  </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {families.slice(0, 6).map((family) => (
+                      <div key={family.id} className="bg-white p-6 rounded-2xl shadow-lg border border-amber-200">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center">
+                            <Users className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => navigate(`/edit-family/${family.id}`)}
+                              className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteFamily(family.id)}
+                              className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-red-900 mb-2 font-serif">{family.headOfFamily} Family</h3>
+                        <p className="text-gray-600 text-sm mb-2 font-serif">
+                          <strong>Members:</strong> {family.numberOfMembers}
+                        </p>
+                        <p className="text-gray-600 text-sm mb-2 font-serif">
+                          <strong>Contact:</strong> {family.contactNumber}
+                        </p>
+                        <p className="text-amber-600 text-sm font-serif line-clamp-2">
+                          <strong>Address:</strong> {family.address}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Media Management Section */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Media Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200">
+              {media.length === 0 ? (
+                <div className="text-center py-8">
+                  <Camera className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+                  <p className="text-gray-500 font-serif text-xl mb-4">No media uploaded yet</p>
+                  <button
+                    onClick={() => navigate('/add-media')}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Upload First Media
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-amber-600 font-serif">Showing {Math.min(media.length, 6)} of {media.length} media items</p>
+                    <button
+                      onClick={() => navigate('/gallery')}
+                      className="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-full font-serif text-sm transition-colors duration-300"
+                    >
+                      View Gallery
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {media.slice(0, 8).map((item) => (
+                      <div key={item.id} className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-amber-200">
+                        <div className="aspect-square overflow-hidden">
+                          <img
+                            src={item.type === 'video' ? item.thumbnail || item.src : item.src}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <h4 className="font-semibold text-red-900 text-sm font-serif line-clamp-1">{item.title}</h4>
+                          <p className="text-amber-600 text-xs font-serif">{item.category}</p>
+                        </div>
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          <button
+                            onClick={() => navigate(`/edit-media/${item.id}`)}
+                            className="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Edit className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteMedia(item.id)}
+                            className="p-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                        {item.type === 'video' && (
+                          <div className="absolute top-2 left-2">
+                            <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+                              <Camera className="w-3 h-3 text-white" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Events Management Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Events Management</h2>

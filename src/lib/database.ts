@@ -318,3 +318,77 @@ export const deleteFamily = async (id: string): Promise<boolean> => {
     return false;
   }
 };
+
+export const deleteMedia = async (id: string): Promise<boolean> => {
+  try {
+    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+    const filteredMedia = existingMedia.filter((item: any) => item.id !== id);
+    localStorage.setItem('gallery_media', JSON.stringify(filteredMedia));
+    return true;
+  } catch (error) {
+    console.error('Error deleting media:', error);
+    return false;
+  }
+};
+
+export const updateFamily = async (id: string, updates: any) => {
+  try {
+    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
+    const familyIndex = existingFamilies.findIndex((family: any) => family.id === id);
+    
+    if (familyIndex === -1) return null;
+    
+    existingFamilies[familyIndex] = {
+      ...existingFamilies[familyIndex],
+      ...updates,
+      updated_at: new Date().toISOString()
+    };
+    
+    localStorage.setItem('church_families', JSON.stringify(existingFamilies));
+    return existingFamilies[familyIndex];
+  } catch (error) {
+    console.error('Error updating family:', error);
+    return null;
+  }
+};
+
+export const updateMedia = async (id: string, updates: any) => {
+  try {
+    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+    const mediaIndex = existingMedia.findIndex((item: any) => item.id === id);
+    
+    if (mediaIndex === -1) return null;
+    
+    existingMedia[mediaIndex] = {
+      ...existingMedia[mediaIndex],
+      ...updates,
+      updated_at: new Date().toISOString()
+    };
+    
+    localStorage.setItem('gallery_media', JSON.stringify(existingMedia));
+    return existingMedia[mediaIndex];
+  } catch (error) {
+    console.error('Error updating media:', error);
+    return null;
+  }
+};
+
+export const getFamilyById = async (id: string) => {
+  try {
+    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
+    return existingFamilies.find((family: any) => family.id === id) || null;
+  } catch (error) {
+    console.error('Error getting family:', error);
+    return null;
+  }
+};
+
+export const getMediaById = async (id: string) => {
+  try {
+    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+    return existingMedia.find((item: any) => item.id === id) || null;
+  } catch (error) {
+    console.error('Error getting media:', error);
+    return null;
+  }
+};</parameter>
