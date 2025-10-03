@@ -264,4 +264,4 @@ const EditMedia: React.FC = () => {
   );
 };
 
-export default EditMedia;</parameter>
+export default EditMedia;
