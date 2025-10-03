@@ -23,7 +23,125 @@ const Gallery: React.FC = () => {
     setUserMedia(media);
   };
 
-  
+  const defaultGalleryItems = [
+    {
+      id: 1,
+      type: 'photo',
+      src: '/images/IMG_20221218_123746 - Copy.jpg',
+      title: 'Christmas Celebration',
+      category: '2023'
+    },
+    {
+      id: 2,
+      type: 'photo',
+      src: '/images/IMG_20230402_073518 copy.jpg',
+      title: 'Palm Sunday',
+      category: '2024'
+    },
+    {
+      id: 3,
+      type: 'photo',
+      src: '/images/IMG-20250629-WA0074.jpg',
+      title: 'Youth Day',
+      category: '2025'
+    },
+    {
+      id: 4,
+      type: 'photo',
+      src: '/images/IMG-20230806-WA0042.jpg',
+      title: 'Easter',
+      category: '2024'
+    },
+    {
+      id: 5,
+      type: 'photo',
+      src: '/images/IMG_6059 - Copy.jpeg',
+      title: 'Best KCYM Unit-Nellikkampoil Forane',
+      category: 'KCYM Arabi Unit-2023-24'
+    },
+    {
+      id: 6,
+      type: 'photo',
+      src: '/images/IMG-20240122-WA0141.jpg',
+      title: 'With Fr.Linto',
+      category: 'KCYM Arabi Unit'
+    },
+    {
+      id: 7,
+      type: 'photo',
+      src: '/images/IMG-20230212-WA0005.jpg',
+      title: 'Church Festival',
+      category: '2023'
+    },
+    {
+      id: 8,
+      type: 'photo',
+      src: '/images/IMG-20240120-WA0085.jpg',
+      title: 'Catechism Teachers',
+      category: 'Outing'
+    },
+    {
+      id: 9,
+      type: 'photo',
+      src: '/images/IMG-20230212-WA0056.jpg',
+      title: 'With KCYM Forane Exwcutive Members',
+      category: '2023'
+    },
+    {
+      id: 10,
+      type: 'photo',
+      src: '/images/IMG-20230212-WA0011.jpg',
+      title: 'Church Festival',
+      category: '2024'
+    },
+    {
+      id: 11,
+      type: 'photo',
+      src: '/images/IMG-20230514-WA0024.jpg',
+      title: 'With Mar.Joseph Pamplany',
+      category: 'Altar Boys'
+    },
+    {
+      id: 12,
+      type: 'photo',
+      src: '/images/IMG-20230618-WA0012.jpg',
+      title: 'Sunday School Students',
+      category: 'Protest'
+    },
+    {
+      id: 13,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/embed/',
+      thumbnail: '/images/IMG-20250629-WA0074.jpg',
+      title: 'Onam Celebration 2023',
+      category: 'Events'
+    },
+    {
+      id: 14,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/embed/',
+      thumbnail: '/images/IMG-20240318-WA0038.jpg',
+      title: 'Good Friday',
+      category: 'Worship'
+    },
+    {
+      id: 15,
+      type: 'video',
+      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/embed/',
+      thumbnail: '/images/IMG-20250404-WA0080.jpg',
+      title: 'Maundy Thursday',
+      category: 'Worship'
+    },
+    {
+      id: 16,
+      type: 'video',
+      src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      thumbnail: '/images/arwaterfallsc.jpg',
+      title: 'Parish Retreat 2024',
+      category: 'Events'
+    }
+
+  ];
 
   const galleryItems = [...defaultGalleryItems, ...userMedia];
 
