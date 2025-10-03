@@ -318,3 +318,53 @@ export const deleteFamily = async (id: string): Promise<boolean> => {
     return false;
   }
 };
+
+export const getFamilyById = async (id: string) => {
+  const families = JSON.parse(localStorage.getItem('church_families') || '[]');
+  return families.find((family: any) => family.id === id) || null;
+};
+
+export const updateFamily = async (id: string, familyData: any) => {
+  try {
+    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
+    const updatedFamilies = existingFamilies.map((family: any) =>
+      family.id === id ? { ...family, ...familyData, updated_at: new Date().toISOString() } : family
+    );
+    localStorage.setItem('church_families', JSON.stringify(updatedFamilies));
+    return updatedFamilies.find((f: any) => f.id === id);
+  } catch (error) {
+    console.error('Error updating family:', error);
+    return null;
+  }
+};
+
+export const deleteMedia = async (id: string): Promise<boolean> => {
+  try {
+    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+    const filteredMedia = existingMedia.filter((media: any) => media.id !== id);
+    localStorage.setItem('gallery_media', JSON.stringify(filteredMedia));
+    return true;
+  } catch (error) {
+    console.error('Error deleting media:', error);
+    return false;
+  }
+};
+
+export const getMediaById = async (id: string) => {
+  const media = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+  return media.find((item: any) => item.id === id) || null;
+};
+
+export const updateMedia = async (id: string, mediaData: any) => {
+  try {
+    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
+    const updatedMedia = existingMedia.map((media: any) =>
+      media.id === id ? { ...media, ...mediaData, updated_at: new Date().toISOString() } : media
+    );
+    localStorage.setItem('gallery_media', JSON.stringify(updatedMedia));
+    return updatedMedia.find((m: any) => m.id === id);
+  } catch (error) {
+    console.error('Error updating media:', error);
+    return null;
+  }
+};

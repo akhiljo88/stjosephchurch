@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Calendar, Heart, LogOut, Home, Upload, Image, Brain } from 'lucide-react';
+import { User, Calendar, Heart, LogOut, Home, Upload, Image, Brain, Phone, Mail, MessageCircle, Instagram } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -227,6 +227,73 @@ const UserDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
+            className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-amber-200 mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif text-center">Contact Admin</h2>
+
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-red-800 to-red-900 rounded-full overflow-hidden border-4 border-amber-300 shadow-xl mb-4">
+                <img
+                  src="/images/3 copy copy.jpg"
+                  alt="Akhil Jose"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-red-900 font-serif">Akhil Jose</h3>
+              <p className="text-amber-600 font-serif">Secretary</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <motion.a
+                href="tel:6282440684"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Phone className="w-8 h-8 text-white mb-2" />
+                <span className="text-white text-sm font-serif">Phone</span>
+              </motion.a>
+
+              <motion.a
+                href="https://wa.me/6282440684?text=Hello%20Akhil"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <MessageCircle className="w-8 h-8 text-white mb-2" />
+                <span className="text-white text-sm font-serif">WhatsApp</span>
+              </motion.a>
+
+              <motion.a
+                href="mailto:akhiljose060@gmail.com"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Mail className="w-8 h-8 text-white mb-2" />
+                <span className="text-white text-sm font-serif">Gmail</span>
+              </motion.a>
+
+              <motion.a
+                href="https://www.instagram.com/akhil_____jo"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-600 to-purple-600 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Instagram className="w-8 h-8 text-white mb-2" />
+                <span className="text-white text-sm font-serif">Instagram</span>
+              </motion.a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
             className="text-center"
           >
             <button

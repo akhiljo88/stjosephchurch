@@ -21,10 +21,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-            <img 
-              src="/st-joseph.png" 
-              alt="St. Joseph" 
-              className="w-8 h-8 object-cover rounded-full"
+            <img
+              src="/church.jpg"
+              alt="St. Joseph's Church"
+              className="w-full h-full object-cover"
             />
           </div>
           <div>

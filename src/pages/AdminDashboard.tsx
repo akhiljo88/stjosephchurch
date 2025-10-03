@@ -377,6 +377,141 @@ const AdminDashboard: React.FC = () => {
             </div>
           </motion.div>
 
+          {/* Family Management Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Family Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200">
+              {families.length === 0 ? (
+                <div className="text-center py-8">
+                  <Users className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+                  <p className="text-gray-500 font-serif text-xl mb-4">No families added yet</p>
+                  <button
+                    onClick={() => navigate('/add-family')}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Add First Family
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {families.map((family) => (
+                    <div key={family.id} className="bg-white p-6 rounded-2xl shadow-lg border border-amber-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center">
+                          <Users className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => navigate(`/edit-family/${family.id}`)}
+                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteFamily(family.id)}
+                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      {family.familyPhoto && (
+                        <div className="w-full h-32 mb-4 rounded-xl overflow-hidden">
+                          <img
+                            src={family.familyPhoto}
+                            alt={family.headOfFamily}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <h3 className="text-lg font-bold text-red-900 mb-2 font-serif">{family.headOfFamily}</h3>
+                      <div className="space-y-1">
+                        <p className="text-gray-600 text-sm font-serif">
+                          <strong>Contact:</strong> {family.contactNumber}
+                        </p>
+                        <p className="text-gray-600 text-sm font-serif">
+                          <strong>Members:</strong> {family.numberOfMembers}
+                        </p>
+                        <p className="text-gray-600 text-sm font-serif line-clamp-2">
+                          <strong>Address:</strong> {family.address}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Image Management Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Image Management</h2>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-4 md:p-8 border-4 border-amber-200">
+              {media.length === 0 ? (
+                <div className="text-center py-8">
+                  <Image className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+                  <p className="text-gray-500 font-serif text-xl mb-4">No media added yet</p>
+                  <button
+                    onClick={() => navigate('/add-media')}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Add First Media
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {media.map((item: any) => (
+                    <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-amber-200 overflow-hidden">
+                      <div className="relative aspect-square">
+                        {item.type === 'photo' ? (
+                          <img
+                            src={item.src}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <Camera className="w-12 h-12 text-gray-400" />
+                          </div>
+                        )}
+                        <div className="absolute top-2 right-2 flex gap-2">
+                          <button
+                            onClick={() => navigate(`/edit-media/${item.id}`)}
+                            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 shadow-lg"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteMedia(item.id)}
+                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-300 shadow-lg"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-sm font-bold text-red-900 mb-1 font-serif line-clamp-1">{item.title}</h3>
+                        <p className="text-xs text-amber-600 font-serif">{item.category}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

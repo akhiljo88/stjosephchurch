@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Video, X, Play, Image as ImageIcon, Maximize } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import HomeButton from '../components/HomeButton';
 import Copyright from '../components/Copyright';
+import { getMedia } from '../lib/database';
 
 const Gallery: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'photos' | 'videos'>('all');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [userMedia, setUserMedia] = useState<any[]>([]);
 
-  const galleryItems = [
+  useEffect(() => {
+    loadMedia();
+  }, []);
+
+  const loadMedia = async () => {
+    const media = await getMedia();
+    setUserMedia(media);
+  };
+
+  const defaultGalleryItems = [
     {
       id: 1,
       type: 'photo',
@@ -129,8 +140,10 @@ const Gallery: React.FC = () => {
       title: 'Parish Retreat 2024',
       category: 'Events'
     }
-    
+
   ];
+
+  const galleryItems = [...defaultGalleryItems, ...userMedia];
 
   const filteredItems = galleryItems.filter(item => {
     if (activeTab === 'all') return true;
@@ -364,10 +377,9 @@ const Gallery: React.FC = () => {
                   {selectedMedia.type === 'video' ? (
                     <div className="aspect-video">
                       <iframe
-                        className="video-iframe"
+                        className="video-iframe w-full h-full"
                         src={selectedMedia.src}
                         title={selectedMedia.title}
-                        className="w-full h-full"
                         allowFullScreen
                       />
                     </div>

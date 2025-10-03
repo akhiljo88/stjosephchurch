@@ -27,6 +27,8 @@ import EditEvent from './pages/EditEvent';
 import AddMedia from './pages/AddMedia';
 import AddFamily from './pages/AddFamily';
 import FamiliesDirectory from './pages/FamiliesDirectory';
+import EditFamily from './pages/EditFamily';
+import EditMedia from './pages/EditMedia';
 
 function App() {
   return (
@@ -57,6 +59,8 @@ function App() {
           <Route path="/add-media" element={<AddMedia />} />
           <Route path="/add-family" element={<AddFamily />} />
           <Route path="/families-directory" element={<FamiliesDirectory />} />
+          <Route path="/edit-family/:id" element={<EditFamily />} />
+          <Route path="/edit-media/:id" element={<EditMedia />} />
         </Routes>
       </div>
     </Router>
