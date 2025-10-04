@@ -262,22 +262,39 @@ export const addMedia = async (mediaData: {
   src: string;
   filename: string;
 }) => {
-  // For now, we'll store media data in localStorage since we can't create new tables
-  const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
-  const newMedia = {
-    id: Date.now().toString(),
-    ...mediaData,
-    created_at: new Date().toISOString()
-  };
-  
-  existingMedia.push(newMedia);
-  localStorage.setItem('gallery_media', JSON.stringify(existingMedia));
-  
-  return newMedia;
+  const { data, error } = await supabase
+    .from('media')
+    .insert({
+      title: mediaData.title,
+      description: mediaData.description,
+      category: mediaData.category,
+      type: mediaData.type,
+      src: mediaData.src,
+      filename: mediaData.filename
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding media:', error);
+    return null;
+  }
+
+  return data;
 };
 
 export const getMedia = async () => {
-  return JSON.parse(localStorage.getItem('gallery_media') || '[]');
+  const { data, error } = await supabase
+    .from('media')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching media:', error);
+    return [];
+  }
+
+  return data || [];
 };
 
 // Family management functions
@@ -289,82 +306,177 @@ export const addFamily = async (familyData: {
   members: Array<{ name: string; age: number; relation: string }>;
   familyPhoto?: string | null;
 }) => {
-  // Store family data in localStorage since we can't create new tables
-  const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
-  const newFamily = {
-    id: Date.now().toString(),
-    ...familyData,
-    created_at: new Date().toISOString()
+  const { data, error } = await supabase
+    .from('families')
+    .insert({
+      head_of_family: familyData.headOfFamily,
+      contact_number: familyData.contactNumber,
+      address: familyData.address,
+      number_of_members: familyData.numberOfMembers,
+      members: familyData.members,
+      family_photo: familyData.familyPhoto || null
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding family:', error);
+    return null;
+  }
+
+  return {
+    id: data.id,
+    headOfFamily: data.head_of_family,
+    contactNumber: data.contact_number,
+    address: data.address,
+    numberOfMembers: data.number_of_members,
+    members: data.members,
+    familyPhoto: data.family_photo,
+    created_at: data.created_at
   };
-  
-  existingFamilies.push(newFamily);
-  localStorage.setItem('church_families', JSON.stringify(existingFamilies));
-  
-  return newFamily;
 };
 
 export const getFamilies = async () => {
-  return JSON.parse(localStorage.getItem('church_families') || '[]');
+  const { data, error } = await supabase
+    .from('families')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching families:', error);
+    return [];
+  }
+
+  return (data || []).map((family: any) => ({
+    id: family.id,
+    headOfFamily: family.head_of_family,
+    contactNumber: family.contact_number,
+    address: family.address,
+    numberOfMembers: family.number_of_members,
+    members: family.members,
+    familyPhoto: family.family_photo,
+    created_at: family.created_at
+  }));
 };
 
 export const deleteFamily = async (id: string): Promise<boolean> => {
-  try {
-    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
-    const filteredFamilies = existingFamilies.filter((family: any) => family.id !== id);
-    localStorage.setItem('church_families', JSON.stringify(filteredFamilies));
-    return true;
-  } catch (error) {
+  const { error } = await supabase
+    .from('families')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
     console.error('Error deleting family:', error);
     return false;
   }
+
+  return true;
 };
 
 export const getFamilyById = async (id: string) => {
-  const families = JSON.parse(localStorage.getItem('church_families') || '[]');
-  return families.find((family: any) => family.id === id) || null;
+  const { data, error } = await supabase
+    .from('families')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching family:', error);
+    return null;
+  }
+
+  return {
+    id: data.id,
+    headOfFamily: data.head_of_family,
+    contactNumber: data.contact_number,
+    address: data.address,
+    numberOfMembers: data.number_of_members,
+    members: data.members,
+    familyPhoto: data.family_photo,
+    created_at: data.created_at
+  };
 };
 
 export const updateFamily = async (id: string, familyData: any) => {
-  try {
-    const existingFamilies = JSON.parse(localStorage.getItem('church_families') || '[]');
-    const updatedFamilies = existingFamilies.map((family: any) =>
-      family.id === id ? { ...family, ...familyData, updated_at: new Date().toISOString() } : family
-    );
-    localStorage.setItem('church_families', JSON.stringify(updatedFamilies));
-    return updatedFamilies.find((f: any) => f.id === id);
-  } catch (error) {
+  const { data, error } = await supabase
+    .from('families')
+    .update({
+      head_of_family: familyData.headOfFamily,
+      contact_number: familyData.contactNumber,
+      address: familyData.address,
+      number_of_members: familyData.numberOfMembers,
+      members: familyData.members,
+      family_photo: familyData.familyPhoto,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
     console.error('Error updating family:', error);
     return null;
   }
+
+  return {
+    id: data.id,
+    headOfFamily: data.head_of_family,
+    contactNumber: data.contact_number,
+    address: data.address,
+    numberOfMembers: data.number_of_members,
+    members: data.members,
+    familyPhoto: data.family_photo
+  };
 };
 
 export const deleteMedia = async (id: string): Promise<boolean> => {
-  try {
-    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
-    const filteredMedia = existingMedia.filter((media: any) => media.id !== id);
-    localStorage.setItem('gallery_media', JSON.stringify(filteredMedia));
-    return true;
-  } catch (error) {
+  const { error } = await supabase
+    .from('media')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
     console.error('Error deleting media:', error);
     return false;
   }
+
+  return true;
 };
 
 export const getMediaById = async (id: string) => {
-  const media = JSON.parse(localStorage.getItem('gallery_media') || '[]');
-  return media.find((item: any) => item.id === id) || null;
+  const { data, error } = await supabase
+    .from('media')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching media:', error);
+    return null;
+  }
+
+  return data;
 };
 
 export const updateMedia = async (id: string, mediaData: any) => {
-  try {
-    const existingMedia = JSON.parse(localStorage.getItem('gallery_media') || '[]');
-    const updatedMedia = existingMedia.map((media: any) =>
-      media.id === id ? { ...media, ...mediaData, updated_at: new Date().toISOString() } : media
-    );
-    localStorage.setItem('gallery_media', JSON.stringify(updatedMedia));
-    return updatedMedia.find((m: any) => m.id === id);
-  } catch (error) {
+  const { data, error } = await supabase
+    .from('media')
+    .update({
+      title: mediaData.title,
+      description: mediaData.description,
+      category: mediaData.category,
+      type: mediaData.type,
+      src: mediaData.src,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
     console.error('Error updating media:', error);
     return null;
   }
+
+  return data;
 };

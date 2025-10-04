@@ -57,11 +57,11 @@ const Home: React.FC = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           className="mb-6"
         >
-          <div className="w-32 h-32 bg-gradient-to-br from-amber-200 to-amber-400 rounded-full flex items-center justify-center shadow-2xl mx-auto mb-4 border-4 border-amber-300 overflow-hidden">
-            <img 
-              src="/st-joseph.png" 
-              alt="St. Joseph" 
-              className="w-28 h-28 object-cover rounded-full"
+          <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl mx-auto mb-4 border-4 border-amber-300 overflow-hidden p-3">
+            <img
+              src="/images/st-joseph.png"
+              alt="St. Joseph"
+              className="w-full h-full object-contain"
             />
           </div>
         </motion.div>

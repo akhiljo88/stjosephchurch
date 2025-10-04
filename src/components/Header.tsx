@@ -20,11 +20,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden p-1">
             <img
-              src="/church.jpg"
+              src="/images/st-joseph.png"
               alt="St. Joseph's Church"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
           <div>
