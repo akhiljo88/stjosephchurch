@@ -8,6 +8,7 @@ import Copyright from '../components/Copyright';
 import FinancialPlanningAI from '../components/FinancialPlanningAI';
 import { getCurrentUserWithPhoto, signOut, isAuthenticated, isUser } from '../lib/auth';
 import type { User as UserType } from '../lib/auth';
+import { getEvents } from '../lib/database';
 
 const UserDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -15,21 +16,21 @@ const UserDashboard: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
   const [showFinancialPlanning, setShowFinancialPlanning] = useState(false);
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    // Check if user is authenticated and is a regular user (not admin)
     if (!isAuthenticated()) {
       navigate('/login');
       return;
     }
 
-    // If user is admin, redirect to admin dashboard
     if (!isUser()) {
       navigate('/admin-dashboard');
       return;
     }
 
     loadUserData();
+    loadEvents();
   }, [navigate]);
 
   const loadUserData = async () => {
@@ -49,16 +50,24 @@ const UserDashboard: React.FC = () => {
     }
   };
 
+  const loadEvents = async () => {
+    try {
+      const events = await getEvents();
+      const formattedEvents = events.map((event: any) => ({
+        event: event.title,
+        date: new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        time: event.time
+      }));
+      setUpcomingEvents(formattedEvents);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  };
+
   const handleLogout = () => {
     signOut();
     navigate('/login');
   };
-
-  const upcomingEvents = [
-    { event: 'Christmas Celebration', date: 'Dec 25, 2025', time: '12:00 AM' },
-    { event: 'New Year Prayer Service', date: 'Dec 31, 2025', time: '11:00 PM' },
-    { event: 'Feast of St. Joseph', date: 'Mar 19, 2026', time: '7:00 AM' }
-  ];
 
   if (loading) {
     return (
