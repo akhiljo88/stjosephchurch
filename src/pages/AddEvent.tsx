@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, FileText, Save, Home, ArrowLeft, X } from 'lucide-react';
+import { Calendar, Save, Home, ArrowLeft, X } from 'lucide-react';
 import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import Copyright from '../components/Copyright';
@@ -13,7 +13,7 @@ const AddEvent: React.FC = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -187,98 +187,6 @@ const AddEvent: React.FC = () => {
                     required
                     disabled={loading}
                   />
-                </div>
-              </div>
-
-              {/* Event Images Section */}
-              <div>
-                <label className="block text-red-900 font-semibold mb-2 font-serif">
-                  Event Images (Optional)
-                </label>
-                <div className="space-y-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowImageGallery(!showImageGallery)}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-serif"
-                    disabled={loading}
-                  >
-                    <Image className="w-5 h-5 mr-2" />
-                    {showImageGallery ? 'Hide Gallery' : 'Select from Gallery'} ({availableMedia.length} available)
-                  </button>
-
-                  {showImageGallery && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      className="bg-amber-100 p-4 rounded-xl border border-amber-200 max-h-64 overflow-y-auto"
-                    >
-                      {availableMedia.length === 0 ? (
-                        <div className="text-center py-4">
-                          <p className="text-amber-600 font-serif">No images available in gallery.</p>
-                          <button
-                            type="button"
-                            onClick={() => navigate('/add-media')}
-                            className="mt-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-full font-serif text-sm transition-colors duration-300"
-                          >
-                            Upload Images First
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                          {availableMedia.map((item) => (
-                            <div
-                              key={item.id}
-                              onClick={() => toggleImageSelection(item.src)}
-                              className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${
-                                selectedImages.includes(item.src)
-                                  ? 'border-red-500 ring-2 ring-red-300'
-                                  : 'border-amber-200 hover:border-red-300'
-                              }`}
-                            >
-                              <img
-                                src={item.src}
-                                alt={item.title}
-                                className="w-full h-full object-cover"
-                              />
-                              {selectedImages.includes(item.src) && (
-                                <div className="absolute inset-0 bg-red-500/30 flex items-center justify-center">
-                                  <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                                    <Plus className="w-4 h-4 text-white rotate-45" />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </motion.div>
-                  )}
-
-                  {selectedImages.length > 0 && (
-                    <div className="bg-green-100 p-4 rounded-xl">
-                      <p className="text-green-800 font-semibold font-serif mb-2">
-                        Selected Images ({selectedImages.length}):
-                      </p>
-                      <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
-                        {selectedImages.map((imageSrc, index) => (
-                          <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
-                            <img
-                              src={imageSrc}
-                              alt={`Selected ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => toggleImageSelection(imageSrc)}
-                              className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors duration-300"
-                            >
-                              <X className="w-3 h-3" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 

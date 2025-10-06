@@ -23,48 +23,7 @@ const Gallery: React.FC = () => {
     setUserMedia(media);
   };
 
-  const defaultGalleryItems = [
-    {
-      id: 1,
-      type: 'photo',
-      src: '/church.jpg',
-      title: 'St. Joseph\'s Church',
-      category: 'Church'
-    },
-    {
-      id: 2,
-      type: 'photo',
-      src: '/images/arabi.webp',
-      title: 'Arabi Community',
-      category: 'Community'
-    },
-    {
-      id: 13,
-      type: 'video',
-      src: 'https://www.instagram.com/reel/Cwjy3ENSk9o/embed/',
-      thumbnail: '/church.jpg',
-      title: 'Onam Celebration 2023',
-      category: 'Events'
-    },
-    {
-      id: 14,
-      type: 'video',
-      src: 'https://www.instagram.com/reel/DIlpQk4TXEk/embed/',
-      thumbnail: '/church.jpg',
-      title: 'Good Friday',
-      category: 'Worship'
-    },
-    {
-      id: 15,
-      type: 'video',
-      src: 'https://www.instagram.com/reel/DIjXHRmTxmq/embed/',
-      thumbnail: '/church.jpg',
-      title: 'Maundy Thursday',
-      category: 'Worship'
-    }
-  ];
-
-  const galleryItems = [...defaultGalleryItems, ...userMedia];
+  const galleryItems = userMedia;
 
   const filteredItems = galleryItems.filter(item => {
     if (activeTab === 'all') return true;
@@ -207,13 +166,29 @@ const Gallery: React.FC = () => {
           </motion.div>
 
           {/* Gallery Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filteredItems.map((item, index) => (
+          {filteredItems.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="text-center py-20"
+            >
+              <div className="w-24 h-24 bg-gradient-to-br from-amber-200 to-amber-300 rounded-full flex items-center justify-center shadow-xl mx-auto mb-6">
+                <ImageIcon className="w-12 h-12 text-red-900" />
+              </div>
+              <h3 className="text-2xl font-bold text-red-900 mb-4 font-serif">No Media Available</h3>
+              <p className="text-gray-700 font-serif max-w-md mx-auto">
+                The gallery is empty. Media added by admin will appear here.
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              {filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 50 }}
@@ -257,7 +232,8 @@ const Gallery: React.FC = () => {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+            </motion.div>
+          )}
 
           {/* Modal */}
           <AnimatePresence>
