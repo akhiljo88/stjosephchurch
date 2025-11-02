@@ -269,7 +269,7 @@ const AdminDashboard: React.FC = () => {
                   {currentAdmin?.family_photo ? (
                     <div className="w-48 h-48 bg-gradient-to-br from-red-800 to-red-900 rounded-2xl overflow-hidden border-4 border-amber-300 shadow-2xl">
                       <img
-                        src={currentAdmin.family_photo}
+                        src="/images/3.jpg"
                         alt={currentAdmin.name}
                         className="w-full h-full object-cover"
                       />
