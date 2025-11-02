@@ -23,7 +23,24 @@ const Gallery: React.FC = () => {
     setUserMedia(media);
   };
 
-  const galleryItems = userMedia;
+  const defaultImages = [
+    {
+      id: 'waterfall-1',
+      type: 'photo',
+      src: '/images/arwaterfallsc.jpg',
+      title: 'Arabi Waterfall',
+      category: 'Nature'
+    },
+    {
+      id: 'waterfall-2',
+      type: 'photo',
+      src: '/images/arwaterfallsc copy.jpg',
+      title: 'Arabi Waterfall - Alternate View',
+      category: 'Nature'
+    }
+  ];
+
+  const galleryItems = [...defaultImages, ...userMedia];
 
   const filteredItems = galleryItems.filter(item => {
     if (activeTab === 'all') return true;
