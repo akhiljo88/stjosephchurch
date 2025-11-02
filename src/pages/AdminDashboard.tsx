@@ -269,7 +269,7 @@ const AdminDashboard: React.FC = () => {
                   {currentAdmin?.family_photo ? (
                     <div className="w-48 h-48 bg-gradient-to-br from-red-800 to-red-900 rounded-2xl overflow-hidden border-4 border-amber-300 shadow-2xl">
                       <img
-                        src="/images/3.jpg"
+                        src={currentAdmin.family_photo}
                         alt={currentAdmin.name}
                         className="w-full h-full object-cover"
                       />
@@ -282,11 +282,11 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="text-3xl font-bold text-red-900 mb-2 font-serif">{currentAdmin?.name || 'Administrator'}</h3>
-                  <p className="text-amber-600 text-lg font-serif mb-4">Church Administrator</p>
+                  <p className="text-amber-600 text-lg font-serif mb-4">Church Secretary</p>
                   <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
                     <div className="bg-white rounded-xl p-4 border border-amber-200">
                       <p className="text-gray-600 font-serif text-sm">Username</p>
-                      <p className="text-red-900 font-bold font-serif">{currentAdmin?.username || 'N/A'}</p>
+                      <p className="text-red-900 font-bold font-serif">{currentAdmin?.username || 'Akhil'}</p>
                     </div>
                     <div className="bg-white rounded-xl p-4 border border-amber-200">
                       <p className="text-gray-600 font-serif text-sm">User ID</p>
