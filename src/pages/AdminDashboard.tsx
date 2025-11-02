@@ -286,7 +286,7 @@ const AdminDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
                     <div className="bg-white rounded-xl p-4 border border-amber-200">
                       <p className="text-gray-600 font-serif text-sm">Username</p>
-                      <p className="text-red-900 font-bold font-serif">{currentAdmin?.username || 'Akhil'}</p>
+                      <p className="text-red-900 font-bold font-serif">Akhil Jose</p>
                     </div>
                     <div className="bg-white rounded-xl p-4 border border-amber-200">
                       <p className="text-gray-600 font-serif text-sm">User ID</p>
