@@ -262,55 +262,6 @@ const AdminDashboard: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="mb-12"
           >
-            <h2 className="text-2xl font-bold text-red-900 mb-6 font-serif">Admin Profile</h2>
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl shadow-2xl p-8 border-4 border-amber-200">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="flex-shrink-0">
-                  {currentAdmin?.family_photo ? (
-                    <div className="w-48 h-48 bg-gradient-to-br from-red-800 to-red-900 rounded-2xl overflow-hidden border-4 border-amber-300 shadow-2xl">
-                      <img
-                        src={currentAdmin.family_photo}
-                        alt={currentAdmin.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-48 h-48 bg-gradient-to-br from-red-800 to-red-900 rounded-2xl overflow-hidden border-4 border-amber-300 shadow-2xl flex items-center justify-center">
-                      <Camera className="w-20 h-20 text-amber-300" />
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-3xl font-bold text-red-900 mb-2 font-serif">{currentAdmin?.name || 'Administrator'}</h3>
-                  <p className="text-amber-600 text-lg font-serif mb-4">Church Secretary</p>
-                  <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
-                    <div className="bg-white rounded-xl p-4 border border-amber-200">
-                      <p className="text-gray-600 font-serif text-sm">Username</p>
-                      <p className="text-red-900 font-bold font-serif">{currentAdmin?.username || 'N/A'}</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 border border-amber-200">
-                      <p className="text-gray-600 font-serif text-sm">User ID</p>
-                      <p className="text-red-900 font-bold font-serif text-xs truncate">{currentAdmin?.id.substring(0, 12)}...</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => navigate('/update-user')}
-                    className="mt-4 inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-900 hover:to-red-800 text-amber-100 font-semibold rounded-full shadow-lg transition-all duration-300 font-serif"
-                  >
-                    <Edit className="w-4 h-4 mr-2" />
-                    Update Profile
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="mb-12"
-          >
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-red-900 font-serif">Quick Actions</h2>
             </div>
